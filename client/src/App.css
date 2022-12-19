@@ -1,0 +1,78 @@
+html {
+  --color1: #152038;
+  --color2: #00ceb8;
+  --color3: midnightblue;
+  text-align: center;
+  font-size: 1.25vmin;
+  margin: 0;
+  background: var(--color1);
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Ubuntu Mono', sans-serif;
+}
+
+img.home {
+  border-radius: 50%;
+  filter: brightness(0.25) drop-shadow(0 0 1.5rem white);
+  width: 80vmin;
+  height: 80vmin;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  vertical-align: middle;
+}
+
+div.home {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 60vmin;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+strong.home {
+  color: var(--color2);
+  height: 50%;
+  font-size: 1800%;
+  text-shadow: 0 0 2.5rem black;
+  opacity: .8;
+  font-family: 'Pulang', sans-serif;
+
+}
+
+input.home {
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--color2);
+  border: 2rem ridge midnightblue;
+  font-size: 500%;
+  border-radius: 2.5rem;
+  opacity: .8;
+  font-weight: 900;
+  font-family: 'Ubuntu Mono', sans-serif;
+}
+
+button.home {
+  background-color: var(--color3);
+  color: white;
+  font-size: 250%;
+  padding: 1rem;
+  border-radius: 2rem;
+  border: 1rem ridge white;
+  font-family: 'Ubuntu Mono', sans-serif;
+}
+
+input.home,
+button.home {
+  filter: drop-shadow(0 0 1.5rem black);
+}
