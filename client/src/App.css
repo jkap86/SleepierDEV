@@ -139,7 +139,6 @@ div.switch_wrapper {
   margin: 2rem auto;
   padding: 0;
   justify-content: center;
-  overflow: hidden;
 }
 
 div.navbar,
@@ -172,11 +171,13 @@ button.sw {
   background-color: transparent;
   color: var(--color4);
   border: none;
-  padding: 2rem;
-  filter: brightness(.5);
+  padding: 1.5rem;
   width: fit-content;
-  font-size: 250%;
+  font-size: 200%;
   font-weight: 900;
+  margin: 0;
+  border: .25rem solid transparent;
+  opacity: .5;
 }
 
 button.nav.active,
@@ -184,18 +185,14 @@ button.sw.active {
   color: var(--color2);
   filter: brightness(2) contrast(2);
   opacity: 1;
+  text-shadow: 0 0 1rem black;
 }
 
-button.nav {}
-
-button.nav.active {}
-
-button.sw {}
-
 button.sw.active {
-  background-color: var(--color3);
+  background-color: var(--color1);
   border-radius: 2rem;
   text-shadow: 0 0 1rem black;
   border: .25rem solid var(--color2);
-  filter: brightness(2) contrast(2) drop-shadow(0 0 .5rem var(--color2));
+  filter: brightness(2) contrast(2);
+
 }
