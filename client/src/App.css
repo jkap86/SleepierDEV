@@ -1,13 +1,14 @@
 html {
-  --color1: #152038;
+  --color1: #171a21;
   --color2: #00ceb8;
   --color3: midnightblue;
   --color4: #9ca7b4;
+  --color5: rgb(0, 0, 25);
   text-align: center;
-  font-size: 1.25vmin;
   margin: 0;
-  background: var(--color1);
+  background: var(--color5);
   color: white;
+  font-size: 2vmin;
   width: 100vw;
   height: 100vh;
   font-family: 'Ubuntu Mono', sans-serif;
@@ -17,8 +18,20 @@ html {
   cursor: pointer;
 }
 
+.red {
+  color: rgb(255, 0, 0);
+}
+
+.green {
+  color: rgb(0, 255, 0);
+}
+
 img {
   border-radius: 50%;
+}
+
+img.thumbnail {
+  width: 3rem;
 }
 
 p.image {
@@ -74,7 +87,7 @@ div.home {
 strong.home {
   color: var(--color2);
   height: 50%;
-  font-size: 1800%;
+  font-size: 7rem;
   text-shadow: 0 0 2.5rem black;
   opacity: .8;
   font-family: 'Pulang', sans-serif;
@@ -87,10 +100,10 @@ input.home {
   text-align: center;
   padding: 1rem;
   background-color: var(--color2);
-  border: 2rem ridge midnightblue;
-  font-size: 500%;
+  border: 1rem ridge midnightblue;
+  font-size: 2rem;
   border-radius: 2.5rem;
-  opacity: .8;
+  box-shadow: inset 0 0 2rem black;
   font-weight: 900;
   font-family: 'Ubuntu Mono', sans-serif;
 }
@@ -98,11 +111,12 @@ input.home {
 button.home {
   background-color: var(--color3);
   color: white;
-  font-size: 250%;
-  padding: 1rem;
+  font-size: 1.25rem;
+  padding: .75rem;
   border-radius: 2rem;
-  border: 1rem ridge white;
+  border: .5rem ridge white;
   font-family: 'Ubuntu Mono', sans-serif;
+  margin-top: 1rem;
 }
 
 input.home,
@@ -111,11 +125,6 @@ button.home {
 }
 
 /* View */
-
-div#view {
-  width: 100%;
-  height: 100%;
-}
 
 a.home {
   text-decoration: none;
@@ -129,41 +138,41 @@ a.home {
 }
 
 div.heading img {
-  width: 10vmin;
+  width: 7.5rem;
   margin: 2rem auto;
 }
 
 div.navbar,
 div.switch_wrapper {
   display: flex;
-  margin: 2rem auto;
+  margin: auto;
   padding: 0;
-  justify-content: center;
+
 }
 
 div.navbar,
 div.switch {
   background-color: black;
-  opacity: .5;
   border-radius: 2rem;
-  filter: drop-shadow(0 0 .5rem white);
+  filter: drop-shadow(0 0 .5rem white) brightness(2);
 }
 
 div.navbar {
   width: fit-content;
+  box-sizing: content-box;
 }
 
 div.switch_wrapper {
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
+  width: 100vw;
+  padding: 1rem 2rem;
+  justify-content: center;
   box-sizing: border-box;
 }
 
 div.switch {
   display: flex;
-  margin: auto 2rem;
   width: fit-content;
+  margin: 1rem;
 }
 
 button.nav,
@@ -171,28 +180,72 @@ button.sw {
   background-color: transparent;
   color: var(--color4);
   border: none;
-  padding: 1.5rem;
-  width: fit-content;
-  font-size: 200%;
+  padding: .5rem;
+  font-size: 1rem;
   font-weight: 900;
-  margin: 0;
   border: .25rem solid transparent;
-  opacity: .5;
+  font-family: 'BitDotted', sans-serif;
+}
+
+button.nav {
+  width: fit-content;
+}
+
+button.sw {
+  width: 5rem;
+}
+
+button.sw:first-of-type,
+button.sw:last-of-type {
+  width: 7.5rem;
 }
 
 button.nav.active,
 button.sw.active {
   color: var(--color2);
   filter: brightness(2) contrast(2);
-  opacity: 1;
-  text-shadow: 0 0 1rem black;
+  text-shadow: 0 0 .25rem black;
+  font-family: 'GROUPE', sans-serif;
+  font-size: 1rem;
 }
 
 button.sw.active {
-  background-color: var(--color1);
+  background-color: var(--color5);
   border-radius: 2rem;
-  text-shadow: 0 0 1rem black;
   border: .25rem solid var(--color2);
   filter: brightness(2) contrast(2);
+}
 
+/* Main Table */
+
+table.main {
+  table-layout: fixed;
+  margin: auto;
+  width: 95vw;
+  background-color: var(--color1);
+  font-size: 1.5rem;
+}
+
+table.main_body {
+  table-layout: fixed;
+  margin: auto;
+  width: 95vw;
+}
+
+tr.main {
+  box-shadow: 0 0 1rem black;
+}
+
+td.left {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+td.left p {
+  margin: 0;
+}
+
+td.left img {
+  vertical-align: middle;
 }
