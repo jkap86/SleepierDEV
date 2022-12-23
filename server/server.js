@@ -57,10 +57,11 @@ app.get('/user', async (req, res, next) => {
         next()
     }
 }, async (req, res, next) => {
-    const leagues_user = await updateLeaguesUser(axios, app.get('leagues_table'), req.leagues, req.user_db.user_id)
+    const leagues_user = await updateLeaguesUser(axios, app.get('leagues_table'), req.leagues, req.user_db.user_id, app.get('state').week)
     res.send({
         user: req.user_db,
-        leagues: leagues_user
+        leagues: leagues_user,
+        state: app.get('state')
     })
 })
 

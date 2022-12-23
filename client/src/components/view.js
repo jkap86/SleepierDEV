@@ -8,7 +8,8 @@ const View = ({
     state_user,
     stateLeagues,
     stateLeaguemates,
-    statePlayerShares
+    statePlayerShares,
+    stateMatchups
 }) => {
     const [stateLeaguesFiltered, setStateLeaguesFiltered] = useState([]);
     const [statePlayerSharesFiltered, setStatePlayerSharesFiltered] = useState([]);
@@ -25,9 +26,42 @@ const View = ({
             state_user: state_user,
             stateLeagues: stateLeagues,
             stateLeaguemates: stateLeaguemates,
-            statePlayerShares: statePlayerShares
+            statePlayerShares: statePlayerShares,
+            stateMatchups: stateMatchups
         })
     }, [stateLeagues, type1, type2])
+
+    const lineups_headers = [
+        [
+            {
+                text: 'League',
+                colSpan: 3,
+                rowSpan: 2
+            },
+            {
+                text: '# Slots',
+                colSpan: 4
+            }
+        ],
+        [
+            {
+                text: 'Suboptimal',
+                colSpan: 1
+            },
+            {
+                text: 'Early in Flex',
+                colSpan: 1
+            },
+            {
+                text: 'Late not in Flex',
+                colSpan: 1
+            },
+            {
+                text: 'Non QBs in SF',
+                colSpan: 1
+            }
+        ]
+    ]
 
     const leagues_headers = [
         [
@@ -250,6 +284,10 @@ const View = ({
     let headers;
     let body;
     switch (tab) {
+        case 'Lineups':
+            headers = lineups_headers
+            body = []
+            break;
         case 'Leagues':
             headers = leagues_headers
             body = leagues_body

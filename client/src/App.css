@@ -32,6 +32,7 @@ img {
 
 img.thumbnail {
   width: 3rem;
+  padding: .5rem;
 }
 
 p.image {
@@ -87,9 +88,8 @@ div.home {
 strong.home {
   color: var(--color2);
   height: 50%;
-  font-size: 7rem;
+  font-size: 12.5rem;
   text-shadow: 0 0 2.5rem black;
-  opacity: .8;
   font-family: 'Pulang', sans-serif;
 
 }
@@ -103,9 +103,10 @@ input.home {
   border: 1rem ridge midnightblue;
   font-size: 2rem;
   border-radius: 2.5rem;
-  box-shadow: inset 0 0 2rem black;
+  box-shadow: inset 0 0 1.25rem black;
   font-weight: 900;
   font-family: 'Ubuntu Mono', sans-serif;
+  opacity: .8;
 }
 
 button.home {

@@ -1,21 +1,26 @@
 const { read, utils } = require('xlsx');
 const cheerio = require('cheerio')
+const fs = require('fs')
+const ALLPLAYERS = require('../allplayers.json')
 
-const getPlayersDict = async (axios, week) => {
+const getPlayersDict = async (axios, season, week) => {
+
     try {
-        const [sleeper_players, dynasty_process, fantasypros, schedule] = await Promise.all([
-            await axios.get('https://api.sleeper.app/v1/players/nfl'),
+        const [dynasty_process, fantasypros, schedule] = await Promise.all([
             await axios.get('https://raw.githubusercontent.com/dynastyprocess/data/master/files/db_playerids.csv', { responseType: 'arraybuffer' }),
             await axios.get('https://www.fantasypros.com/nfl/rankings/ppr-superflex.php'),
-            await axios.get(`https://api.sportsdata.io/v3/nfl/scores/json/Schedules/%7B2022%7D?key=d5d541b8c8b14262b069837ff8110635`)
+            await axios.get(`https://api.myfantasyleague.com/${season}/export?TYPE=nflSchedule&W=${week}&JSON=1`)
         ])
+
+        const sleeper_players = {
+            data: ALLPLAYERS
+        }
+
         let gametimes = {}
-        schedule.data?.filter(x => x.Week === week).map(s => {
-            gametimes = {
-                ...gametimes,
-                [s.HomeTeam]: new Date(s.Date) || new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-                [s.AwayTeam]: new Date(s.Date) || new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-            }
+        schedule.data?.nflSchedule.matchup.map(m => {
+            return m.team.map(t => {
+                gametimes[t.id] = m.kickoff
+            })
         })
 
         const workbook = read(dynasty_process.data, { type: 'array' })

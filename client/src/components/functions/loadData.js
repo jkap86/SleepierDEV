@@ -1,8 +1,9 @@
 
 
-export const getLeagueData = (leagues, user_id) => {
+export const getLeagueData = (leagues, user_id, week) => {
     let players_all = [];
     let leaguemates_all = [];
+    let matchups_all = []
 
     leagues.map(league => {
         league.rosters.map(roster => {
@@ -63,6 +64,12 @@ export const getLeagueData = (leagues, user_id) => {
                 })
             }
         })
+
+        let matchups_league = { league: league }
+        Array.from(Array(week).keys()).map(key => {
+            matchups_league[`matchups_${key + 1}`] = league[`matchups_${key + 1}`]
+        })
+        matchups_all.push(matchups_league)
     })
 
     let playersCount = [];
@@ -103,7 +110,14 @@ export const getLeagueData = (leagues, user_id) => {
 
     return {
         players: playersCount,
-        leaguemates: leaguematesCount
+        leaguemates: leaguematesCount,
+        matchups: matchups_all
     }
 }
+
+const getLineupCheck = () => {
+
+}
+
+
 
