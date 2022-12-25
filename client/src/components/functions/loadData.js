@@ -115,8 +115,76 @@ export const getLeagueData = (leagues, user_id, week) => {
     }
 }
 
-const getLineupCheck = () => {
+export const getLineupCheck = (matchup, league, stateAllPlayers) => {
+    const player_ranks = {}
+    matchup.players.map(player_id => {
+        return player_ranks[player_id] = stateAllPlayers[player_id]?.rank_ecr
+    })
 
+    const position_map = {
+        'QB': ['QB'],
+        'RB': ['RB', 'FB'],
+        'WR': ['WR'],
+        'TE': ['TE'],
+        'FLEX': ['RB', 'FB', 'WR', 'TE'],
+        'SUPER_FLEX': ['QB', 'RB', 'FB', 'WR', 'TE'],
+        'WRRB_FLEX': ['RB', 'FB', 'WR'],
+        'REC_FLEX': ['WR', 'TE']
+    }
+    const starting_slots = league.roster_positions.filter(x => Object.keys(position_map).includes(x))
+
+    const getOptimalLineup = () => {
+        let optimalLineup = []
+        let player_ranks_filtered = player_ranks
+
+        starting_slots.map((slot, index) => {
+            const current_player = matchup.starters[index]
+            const slot_options = Object.keys(player_ranks_filtered)
+                .filter(p =>
+                    position_map[slot].includes(stateAllPlayers[p]?.position)
+                )
+                .sort((a, b) => player_ranks_filtered[a] - player_ranks_filtered[b])
+
+            const optimal_player = player_ranks_filtered[slot_options[0]] < player_ranks_filtered[current_player] ? slot_options[0] : current_player
+            delete player_ranks_filtered[optimal_player]
+            return optimalLineup[index] = {
+                slot: slot,
+                player: optimal_player
+            }
+        })
+        return optimalLineup
+    }
+    const optimalLineup = getOptimalLineup()
+
+    const lineup_check = []
+    starting_slots.map((slot, index) => {
+        const gametime = new Date(stateAllPlayers[matchup.starters[index]]?.gametime)
+
+        const slot_options = matchup.players
+            .filter(x =>
+                !matchup.starters.includes(x) &&
+                position_map[slot].includes(stateAllPlayers[x]?.position)
+            )
+
+
+        return lineup_check.push({
+            index: index,
+            slot: slot,
+            current_player: matchup.starters[index],
+            notInOptimal: !optimalLineup.find(x => x.player === matchup.starters[index]),
+            earlyInFlex: gametime.getDay() > 1 && gametime.getDay() < 7 &&
+                position_map[slot].length > 1,
+            lateNotInFlex: (gametime.getDay() >= 0 && gametime.getDay() < 3 || gametime.getDay() === 0 && gametime.getHours() > 17) &&
+                position_map[slot].length === 1,
+            nonQBinSF: position_map[slot].includes('QB') && stateAllPlayers[matchup.starters[index]]?.position !== 'QB',
+            slot_options: slot_options,
+        })
+    })
+
+    return {
+        optimal_lineup: optimalLineup,
+        lineup_check: lineup_check
+    }
 }
 
 

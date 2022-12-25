@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { avatar } from './functions/misc';
-import TableMain from "./tableMain";
+import Leagues from "./leagues";
+import Players from "./players";
+import Leaguemates from "./leaguemates";
+import Lineups from "./lineups";
 
 const View = ({
     stateAllPlayers,
+    stateState,
     state_user,
     stateLeagues,
     stateLeaguemates,
@@ -19,10 +23,10 @@ const View = ({
     const [type2, setType2] = useState('All');
 
 
-
-
     useEffect(() => {
         console.log({
+            stateAllPlayers: stateAllPlayers,
+            stateState: stateState,
             state_user: state_user,
             stateLeagues: stateLeagues,
             stateLeaguemates: stateLeaguemates,
@@ -31,287 +35,42 @@ const View = ({
         })
     }, [stateLeagues, type1, type2])
 
-    const lineups_headers = [
-        [
-            {
-                text: 'League',
-                colSpan: 3,
-                rowSpan: 2
-            },
-            {
-                text: '# Slots',
-                colSpan: 4
-            }
-        ],
-        [
-            {
-                text: 'Suboptimal',
-                colSpan: 1
-            },
-            {
-                text: 'Early in Flex',
-                colSpan: 1
-            },
-            {
-                text: 'Late not in Flex',
-                colSpan: 1
-            },
-            {
-                text: 'Non QBs in SF',
-                colSpan: 1
-            }
-        ]
-    ]
 
-    const leagues_headers = [
-        [
-            {
-                text: 'League',
-                colSpan: 4
-            },
-            {
-                text: 'Record',
-                colSpan: 2
-            },
-            {
-                text: 'Rank',
-                colSpan: 1
-            },
-            {
-                text: 'Rank PF',
-                colSpan: 1
-            }
-        ]
-    ]
-
-    const leagues_body = stateLeagues.map(league => {
-        return [
-            {
-                text: league.name,
-                colSpan: 4,
-                className: 'left',
-                image: {
-                    src: league.avatar,
-                    alt: league.name,
-                    type: 'league'
-                }
-            },
-            {
-                text: `${league.userRoster.settings.wins}-${league.userRoster.settings.losses}`
-                    + (league.userRoster.settings.ties > 0 ? `-${league.userRoster.settings.ties}` : ''),
-                colSpan: 1
-            },
-            {
-                text: (
-                    (league.userRoster.settings.wins) /
-                    (league.userRoster.settings.wins + league.userRoster.settings.losses + league.userRoster.settings.ties)
-                ).toLocaleString("en-US", { maximumFractionDigits: 4, minimumFractionDigits: 4 }).slice(1, 6),
-                colSpan: 1
-            },
-            {
-                text: league.userRoster.rank,
-                colSpan: 1,
-                className: league.userRoster.rank / league.rosters.length <= .25 ? 'green' :
-                    league.userRoster.rank / league.rosters.length >= .75 ? 'red' :
-                        null
-            },
-            {
-                text: league.userRoster.rank_points,
-                colSpan: 1,
-                className: league.userRoster.rank_points / league.rosters.length <= .25 ? 'green' :
-                    league.userRoster.rank_points / league.rosters.length >= .75 ? 'red' :
-                        null
-            }
-        ]
-    })
-
-    const playerShares_headers = [
-        [
-            {
-                text: 'Player',
-                colSpan: 4
-            },
-            {
-                text: 'Owned',
-                colSpan: 1
-            },
-            {
-                text: 'Taken',
-                colSpan: 1
-            },
-            {
-                text: 'Available',
-                colSpan: 1
-            }
-        ]
-    ]
-
-    const playerShares_body = statePlayerShares
-        .sort((a, b) => b.leagues_owned.length - a.leagues_owned.length)
-        .map(player => {
-            return [
-                {
-                    text: stateAllPlayers[player.id]?.full_name,
-                    colSpan: 4,
-                    className: 'left',
-                    image: {
-                        src: player.id,
-                        alt: stateAllPlayers[player.id]?.full_name || player.id,
-                        type: 'player'
-                    }
-                },
-                {
-                    text: player.leagues_owned.length,
-                    colSpan: 1
-                },
-                {
-                    text: player.leagues_taken.length,
-                    colSpan: 1
-                },
-                {
-                    text: player.leagues_available.length,
-                    colSpan: 1
-                }
-            ]
-        })
-
-    const leaguemates_headers = [
-        [
-            {
-                text: 'Leaguemate',
-                colSpan: 3,
-                rowSpan: 2
-            },
-            {
-                text: '#',
-                colSpan: 1,
-                rowSpan: 2
-            },
-            {
-                text: 'Leaguemate',
-                colSpan: 4
-            },
-            {
-                text: state_user.username,
-                colSpan: 4
-            }
-        ],
-        [
-            {
-                text: 'Record',
-                colSpan: 2
-            },
-            {
-                text: 'Fpts',
-                colSpan: 2
-            },
-            {
-                text: 'Record',
-                colSpan: 2
-            },
-            {
-                text: 'Fpts',
-                colSpan: 2
-            }
-
-        ]
-    ]
-
-    const leaguemates_body = stateLeaguemates
-        .filter(x => x.display_name !== state_user.username)
-        .sort((a, b) => b.leagues.length - a.leagues.length)
-        .map(lm => {
-            return [
-                {
-                    text: lm.display_name,
-                    colSpan: 3,
-                    className: 'left',
-                    image: {
-                        src: lm.avatar,
-                        alt: lm.display_name,
-                        type: 'user'
-                    }
-                },
-                {
-                    text: lm.leagues.length,
-                    colSpan: 1
-                },
-                {
-                    text: (
-                        lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.wins, 0) +
-                        "-" +
-                        lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.losses, 0) +
-                        (
-                            lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.ties, 0) > 0 ?
-                                `${lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.ties, 0)}` :
-                                ''
-                        )
-                    ),
-                    colSpan: 2
-                },
-                {
-                    text: lm.leagues.reduce(
-                        (acc, cur) =>
-                            acc +
-                            parseFloat(
-                                cur.lmRoster.settings?.fpts +
-                                '.' +
-                                cur.lmRoster.settings?.fpts_decimal
-                            )
-                        , 0).toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
-                    colSpan: 2
-                },
-                {
-                    text: (
-                        lm.leagues.reduce((acc, cur) => acc + cur.userRoster.settings?.wins, 0) +
-                        "-" +
-                        lm.leagues.reduce((acc, cur) => acc + cur.userRoster.settings?.losses, 0) +
-                        (
-                            lm.leagues.reduce((acc, cur) => acc + cur.userRoster.settings?.ties, 0) > 0 ?
-                                `${lm.leagues.reduce((acc, cur) => acc + cur.userRoster.settings?.ties, 0)}` :
-                                ''
-                        )
-                    ),
-                    colSpan: 2
-                },
-                {
-                    text: lm.leagues.reduce((acc, cur) => acc + cur.userRoster.settings?.fpts, 0),
-                    colSpan: 2
-                }
-            ]
-        })
-
-    let headers;
-    let body;
+    let display;
     switch (tab) {
         case 'Lineups':
-            headers = lineups_headers
-            body = []
+            display = <Lineups
+                stateState={stateState}
+                stateAllPlayers={stateAllPlayers}
+                state_user={state_user}
+                stateMatchups={stateMatchups}
+            />
             break;
         case 'Leagues':
-            headers = leagues_headers
-            body = leagues_body
+            display = <Leagues
+                stateAllPlayers={stateAllPlayers}
+                state_user={state_user}
+                stateLeagues={stateLeagues}
+            />
             break;
         case 'Players':
-            headers = playerShares_headers
-            body = playerShares_body
+            display = <Players
+                stateAllPlayers={stateAllPlayers}
+                state_user={state_user}
+                statePlayerShares={statePlayerShares}
+            />
             break;
         case 'Leaguemates':
-            headers = leaguemates_headers
-            body = leaguemates_body
+            display = <Leaguemates
+                stateAllPlayers={stateAllPlayers}
+                state_user={state_user}
+                stateLeaguemates={stateLeaguemates}
+            />
             break;
         default:
-            headers = []
-            body = []
+            display = null
             break;
     }
-
-    const display = (
-        <TableMain
-            headers={headers}
-            body={body}
-        />
-    )
 
     return <>
         <div id={'view'}>

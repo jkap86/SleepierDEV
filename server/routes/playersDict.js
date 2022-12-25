@@ -16,10 +16,23 @@ const getPlayersDict = async (axios, season, week) => {
             data: ALLPLAYERS
         }
 
+        const teams_conversion = {
+            'KCC': 'KC',
+            'NEP': 'NE',
+            'NOS': 'NO',
+            'GBP': 'GB',
+            'SFO': 'SF',
+            'TBB': 'TB'
+        }
+
         let gametimes = {}
         schedule.data?.nflSchedule.matchup.map(m => {
             return m.team.map(t => {
-                gametimes[t.id] = m.kickoff
+
+                gametimes[teams_conversion[t.id] || t.id] = {
+                    kickoff: m.kickoff,
+                    opponent: teams_conversion[m.team.find(x => x.id !== t.id)?.id] || m.team.find(x => x.id !== t.id)?.id
+                }
             })
         })
 
@@ -53,12 +66,8 @@ const getPlayersDict = async (axios, season, week) => {
                 college: dynProc_player?.college,
                 week: fantasypros_player?.week,
                 rank_ecr: fantasypros_player?.rank_ecr || 999,
-                rank_min: fantasypros_player?.rank_min,
-                rank_max: fantasypros_player?.rank_max,
-                rank_ave: fantasypros_player?.rank_ave,
-                rank_std: fantasypros_player?.rank_std,
-                player_opponent: fantasypros_player?.player_opponent,
-                gametime: gametimes[sleeper_player?.team]
+                player_opponent: gametimes[sleeper_player?.team]?.opponent || '-',
+                gametime: gametimes[sleeper_player?.team]?.kickoff || null
             }
 
         })
