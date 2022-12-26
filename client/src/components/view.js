@@ -18,6 +18,7 @@ const View = ({
     const [stateLeaguesFiltered, setStateLeaguesFiltered] = useState([]);
     const [statePlayerSharesFiltered, setStatePlayerSharesFiltered] = useState([]);
     const [stateLeaguematesFiltered, setStateLeaguematesFiltered] = useState([]);
+    const [stateMatchupsFiltered, setStateMatchupsFiltered] = useState([]);
     const [tab, setTab] = useState('Lineups');
     const [type1, setType1] = useState('All');
     const [type2, setType2] = useState('All');
@@ -56,9 +57,12 @@ const View = ({
                     filteredPlayerShares = playershares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned.filter(x => x.type !== 2)
+                            leagues_owned: player.leagues_owned.filter(x => x.type !== 2),
+                            leagues_taken: player.leagues_taken.filter(x => x.type !== 2),
+                            leagues_available: player.leagues_available.filter(x => x.type !== 2)
                         }
                     })
+                    filteredMatchups = matchups.filter(x => x.league.type !== 2)
                     break;
                 case ('All'):
                     filteredLeagues = leagues;
@@ -71,9 +75,12 @@ const View = ({
                     filteredPlayerShares = playershares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned
+                            leagues_owned: player.leagues_owned,
+                            leagues_taken: player.leagues_taken,
+                            leagues_available: player.leagues_available
                         }
                     })
+                    filteredMatchups = matchups
                     break;
                 case ('Dynasty'):
                     filteredLeagues = leagues.filter(x => x.type === 2)
@@ -86,9 +93,12 @@ const View = ({
                     filteredPlayerShares = playershares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned.filter(x => x.type === 2)
+                            leagues_owned: player.leagues_owned.filter(x => x.type === 2),
+                            leagues_taken: player.leagues_taken.filter(x => x.type === 2),
+                            leagues_available: player.leagues_available.filter(x => x.type === 2)
                         }
                     })
+                    filteredMatchups = matchups.filter(x => x.league.type === 2)
                     break;
                 default:
                     filteredLeagues = leagues;
@@ -101,14 +111,18 @@ const View = ({
                     filteredPlayerShares = playershares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned
+                            leagues_owned: player.leagues_owned,
+                            leagues_taken: player.leagues_taken,
+                            leagues_available: player.leagues_available
                         }
                     })
+                    filteredMatchups = matchups;
                     break;
             }
             let filteredLeagues2 = filteredLeagues
             let filteredLeaguemates2 = filteredLeaguemates
             let filteredPlayerShares2 = filteredPlayerShares
+            let filteredMatchups2 = filteredMatchups
             switch (filter2) {
                 case ('Bestball'):
                     filteredLeagues2 = filteredLeagues.filter(x => x.best_ball === 1);
@@ -121,9 +135,12 @@ const View = ({
                     filteredPlayerShares2 = filteredPlayerShares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned.filter(x => x.best_ball === 1)
+                            leagues_owned: player.leagues_owned.filter(x => x.best_ball === 1),
+                            leagues_taken: player.leagues_taken.filter(x => x.best_ball === 1),
+                            leagues_available: player.leagues_available.filter(x => x.best_ball === 1)
                         }
                     })
+                    filteredMatchups2 = filteredMatchups.filter(x => x.league.best_ball === 1)
                     break;
                 case ('All'):
                     filteredLeagues2 = filteredLeagues;
@@ -136,9 +153,12 @@ const View = ({
                     filteredPlayerShares2 = filteredPlayerShares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned
+                            leagues_owned: player.leagues_owned,
+                            leagues_taken: player.leagues_taken,
+                            leagues_available: player.leagues_available
                         }
                     })
+                    filteredMatchups2 = filteredMatchups
                     break;
                 case ('Standard'):
                     filteredLeagues2 = filteredLeagues.filter(x => x.best_ball !== 1);
@@ -151,9 +171,12 @@ const View = ({
                     filteredPlayerShares2 = filteredPlayerShares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned.filter(x => x.best_ball !== 1)
+                            leagues_owned: player.leagues_owned.filter(x => x.best_ball !== 1),
+                            leagues_taken: player.leagues_taken.filter(x => x.best_ball !== 1),
+                            leagues_available: player.leagues_available.filter(x => x.best_ball !== 1)
                         }
                     })
+                    filteredMatchups2 = filteredMatchups.filter(x => x.league.best_ball !== 1)
                     break;
                 default:
                     filteredLeagues2 = filteredLeagues;
@@ -166,15 +189,19 @@ const View = ({
                     filteredPlayerShares2 = filteredPlayerShares.map(player => {
                         return {
                             ...player,
-                            leagues_owned: player.leagues_owned
+                            leagues_owned: player.leagues_owned,
+                            leagues_taken: player.leagues_taken,
+                            leagues_available: player.leagues_available
                         }
                     })
+                    filteredMatchups2 = filteredMatchups
                     break;
             }
 
             setStateLeaguesFiltered([...filteredLeagues2])
             setStateLeaguematesFiltered([...filteredLeaguemates2])
             setStatePlayerSharesFiltered([...filteredPlayerShares2])
+            setStateMatchupsFiltered([...filteredMatchups2])
         }
         fetchFiltered()
 
@@ -188,28 +215,29 @@ const View = ({
                 stateState={stateState}
                 stateAllPlayers={stateAllPlayers}
                 state_user={state_user}
-                stateMatchups={stateMatchups}
+                stateMatchups={stateMatchupsFiltered}
             />
             break;
         case 'Leagues':
             display = <Leagues
                 stateAllPlayers={stateAllPlayers}
                 state_user={state_user}
-                stateLeagues={stateLeagues}
+                stateLeagues={stateLeaguesFiltered}
             />
             break;
         case 'Players':
             display = <Players
                 stateAllPlayers={stateAllPlayers}
                 state_user={state_user}
-                statePlayerShares={statePlayerShares}
+                statePlayerShares={statePlayerSharesFiltered}
+                leagues_count={stateLeaguesFiltered.length}
             />
             break;
         case 'Leaguemates':
             display = <Leaguemates
                 stateAllPlayers={stateAllPlayers}
                 state_user={state_user}
-                stateLeaguemates={stateLeaguemates}
+                stateLeaguemates={stateLeaguematesFiltered}
             />
             break;
         default:

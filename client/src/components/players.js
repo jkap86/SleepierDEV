@@ -5,7 +5,8 @@ import PlayerLeagues from "./player_leagues";
 const Players = ({
     stateAllPlayers,
     state_user,
-    statePlayerShares
+    statePlayerShares,
+    leagues_count
 }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
@@ -14,18 +15,45 @@ const Players = ({
         [
             {
                 text: 'Player',
-                colSpan: 4
+                colSpan: 4,
+                rowSpan: 2
             },
             {
                 text: 'Owned',
-                colSpan: 1
+                colSpan: 2
             },
             {
                 text: 'Taken',
-                colSpan: 1
+                colSpan: 2
             },
             {
                 text: 'Available',
+                colSpan: 2
+            }
+        ],
+        [
+            {
+                text: 'Total',
+                colSpan: 1
+            },
+            {
+                text: '%',
+                colSpan: 1
+            },
+            {
+                text: 'Total',
+                colSpan: 1
+            },
+            {
+                text: '%',
+                colSpan: 1
+            },
+            {
+                text: 'Total',
+                colSpan: 1
+            },
+            {
+                text: '%',
                 colSpan: 1
             }
         ]
@@ -52,11 +80,23 @@ const Players = ({
                         colSpan: 1
                     },
                     {
+                        text: ((player.leagues_owned.length / leagues_count) * 100).toFixed(1) + '%',
+                        colSpan: 1
+                    },
+                    {
                         text: player.leagues_taken.length,
                         colSpan: 1
                     },
                     {
+                        text: ((player.leagues_taken.length / leagues_count) * 100).toFixed(1) + '%',
+                        colSpan: 1
+                    },
+                    {
                         text: player.leagues_available?.length || '0',
+                        colSpan: 1
+                    },
+                    {
+                        text: ((player.leagues_available.length / leagues_count) * 100).toFixed(1) + '%',
                         colSpan: 1
                     }
                 ],
