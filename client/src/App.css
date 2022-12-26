@@ -150,12 +150,12 @@ strong.home {
 
 input.home {
   width: 50vmin;
-  margin: auto;
+  margin: 3rem auto;
   text-align: center;
   padding: 1rem;
   background-color: var(--color2);
   border: 1rem ridge midnightblue;
-  font-size: 2rem;
+  font-size: 3rem;
   border-radius: 2.5rem;
   box-shadow: inset 0 0 1.25rem black;
   font-weight: 900;
