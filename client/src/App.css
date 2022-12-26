@@ -314,6 +314,10 @@ th.small {
   ;
 }
 
+td {
+  height: 4rem;
+}
+
 tbody,
 tr,
 th,
@@ -331,6 +335,7 @@ div.page_numbers_wrapper {
   width: 100%;
   background-color: var(--color5);
   z-index: 15;
+  height: 4rem;
 }
 
 ol.page_numbers {
@@ -385,6 +390,10 @@ table.secondary {
   width: 100%;
   display: inline-table;
   vertical-align: top;
+}
+
+table.secondary tr.active td {
+  background-color: var(--color3);
 }
 
 table.secondary td {

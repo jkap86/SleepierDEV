@@ -24,13 +24,13 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
 
     leagues_user_db = leagues_user_db.map(league => league.dataValues)
     const leagues_to_update = leagues.filter(l => !leagues_user_db.find(l_db => l_db.league_id === l.league_id))
-
+    console.log(leagues_user_db, leagues_to_update)
     let new_leagues = []
 
     let i = 0;
     const increment = 100;
 
-    while (i + increment < leagues_to_update.length + 1) {
+    while (i < leagues_to_update.length + 1) {
         await Promise.all(leagues_to_update
             .slice(i, Math.min(i + increment, leagues_to_update.length + 1))
             .map(async league_to_update => {
