@@ -169,6 +169,7 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
     )
 
     return <>
+        {caption}
         <TableMain
             type={'main'}
             headers={lineups_headers}
@@ -177,7 +178,6 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
-            caption={caption}
         />
     </>
 }

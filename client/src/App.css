@@ -218,20 +218,21 @@ div.switch {
 
 div.navbar {
   width: fit-content;
-  box-sizing: content-box;
+  min-width: 75%;
+  max-width: 100%;
 }
 
 div.switch_wrapper {
-  width: 100vw;
+  max-width: 75rem;
   padding: 1rem 2rem;
-  justify-content: center;
+  justify-content: space-evenly;
   box-sizing: border-box;
+  margin: auto;
 }
 
 div.switch {
   display: flex;
-  width: fit-content;
-  margin: 1rem;
+  width: 25rem;
 }
 
 button.nav,
@@ -240,23 +241,30 @@ button.sw {
   color: var(--color4);
   border: none;
   padding: .5rem;
-  font-size: 1rem;
   font-weight: 900;
   border: .25rem solid transparent;
   font-family: 'BitDotted', sans-serif;
 }
 
 button.nav {
-  width: fit-content;
+  width: 22%;
+  font-size: 1.5rem;
+}
+
+button.nav:last-of-type {
+  width: 34%;
 }
 
 button.sw {
-  width: 5rem;
+  min-width: fit-content;
+  max-width: 60%;
+  font-size: 1.25rem;
+  padding: .5rem;
 }
 
 button.sw:first-of-type,
 button.sw:last-of-type {
-  width: 7.5rem;
+  width: 45%;
 }
 
 button.nav.active,
@@ -265,7 +273,7 @@ button.sw.active {
   filter: brightness(2) contrast(2);
   text-shadow: 0 0 .25rem black;
   font-family: 'GROUPE', sans-serif;
-  font-size: 1rem;
+
 }
 
 button.sw.active {
@@ -452,9 +460,6 @@ tr.secondary.active {
 div.nav {
   height: 3rem;
   background-color: inherit;
-  position: sticky;
-  top: 12.5rem;
-  z-index: 14;
 }
 
 div.primary.nav {
@@ -462,13 +467,13 @@ div.primary.nav {
 }
 
 div.nav>button {
-  font-size: inherit;
+  font-size: 1.25rem;
   background-color: transparent;
   color: white;
   border: ridge .1rem var(--color4);
   opacity: .25;
-  height: 3rem;
   margin: 0 1rem;
+  padding: 1rem;
 }
 
 div.nav>button.active {

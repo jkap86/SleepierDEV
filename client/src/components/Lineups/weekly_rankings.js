@@ -12,7 +12,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
                 className={tab === 'Weekly Rankings' ? 'active click' : 'click'}
                 onClick={() => setTab('Weekly Rankings')}
             >
-                Weekly Rankings
+                {`Week ${stateState.week} Rankings`}
             </button>
             <button
                 className={tab === 'Lineup Check' ? 'active click' : 'click'}
@@ -55,7 +55,13 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
                 list: [
                     {
                         text: stateAllPlayers[player_id]?.full_name,
-                        colSpan: 3
+                        colSpan: 3,
+                        className: 'left',
+                        image: {
+                            src: player_id,
+                            alt: stateAllPlayers[player_id]?.full_name,
+                            type: 'player'
+                        }
                     },
                     {
                         text: stateAllPlayers[player_id]?.player_opponent,
@@ -74,6 +80,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
         })
 
     return <>
+        {caption}
         <TableMain
             type={'main'}
             headers={weekly_rankings_headers}
@@ -82,7 +89,6 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
-            caption={caption}
         />
     </>
 }
