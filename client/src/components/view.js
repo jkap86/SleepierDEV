@@ -23,16 +23,6 @@ const View = ({
     const [type1, setType1] = useState('All');
     const [type2, setType2] = useState('All');
 
-    console.log({
-        stateAllPlayers: stateAllPlayers,
-        stateState: stateState,
-        state_user: state_user,
-        stateLeagues: stateLeagues,
-        stateLeaguemates: stateLeaguemates,
-        statePlayerShares: statePlayerShares,
-        stateMatchups: stateMatchups
-    })
-
     useEffect(() => {
         const fetchFiltered = () => {
             const filter1 = type1
