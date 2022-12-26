@@ -32,7 +32,7 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
 
     while (i + increment < leagues_to_update.length + 1) {
         await Promise.all(leagues_to_update
-            .slice(i, Math.min(i + increment, [...leagues_to_add, ...leagues_to_update].length + 1))
+            .slice(i, Math.min(i + increment, leagues_to_update.length + 1))
             .map(async league_to_update => {
                 const [league, users, rosters, matchups] = await Promise.all([
                     await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}`),

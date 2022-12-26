@@ -7,8 +7,7 @@ const bootServer = async (app, axios, db) => {
     try {
         state = await axios.get('https://api.sleeper.app/v1/state/nfl')
     } catch (error) {
-        state = { data: { season: 2022, week: 16 } }
-        console.log(error?.response)
+        console.log(error)
     }
 
     app.set('state', state.data)
