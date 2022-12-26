@@ -17,10 +17,12 @@ const getPlayersDict = async (axios, season, week) => {
         }
 
         const teams_conversion = {
+            'GBP': 'GB',
+            'JAC': 'JAX',
             'KCC': 'KC',
+            'LVR': 'LV',
             'NEP': 'NE',
             'NOS': 'NO',
-            'GBP': 'GB',
             'SFO': 'SF',
             'TBB': 'TB'
         }

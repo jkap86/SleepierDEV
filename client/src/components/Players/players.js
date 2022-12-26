@@ -1,5 +1,6 @@
 import TableMain from "../tableMain";
 import { useState } from "react";
+import headshot from '../../images/headshot.png';
 import PlayerLeagues from "./player_leagues";
 
 const Players = ({
@@ -66,11 +67,11 @@ const Players = ({
                 id: player.id,
                 list: [
                     {
-                        text: stateAllPlayers[player.id]?.full_name,
+                        text: stateAllPlayers[player.id]?.full_name || `INACTIVE PLAYER`,
                         colSpan: 4,
                         className: 'left',
                         image: {
-                            src: player.id,
+                            src: stateAllPlayers[player.id] ? player.id : headshot,
                             alt: stateAllPlayers[player.id]?.full_name || player.id,
                             type: 'player'
                         }

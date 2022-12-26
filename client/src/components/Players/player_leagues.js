@@ -90,21 +90,21 @@ const PlayerLeagues = ({ leagues_owned, leagues_taken, leagues_available }) => {
     })
 
     return <>
-        <div className="secondary_nav">
+        <div className="secondary nav">
             <button
-                className={tab === 'Owned' ? 'active' : ''}
+                className={tab === 'Owned' ? 'active click' : 'click'}
                 onClick={() => setTab('Owned')}
             >
                 Owned
             </button>
             <button
-                className={tab === 'Taken' ? 'active' : ''}
+                className={tab === 'Taken' ? 'active click' : 'click'}
                 onClick={() => setTab('Taken')}
             >
                 Taken
             </button>
             <button
-                className={tab === 'Available' ? 'active' : ''}
+                className={tab === 'Available' ? 'active click' : 'click'}
                 onClick={() => setTab('Available')}
             >
                 Available

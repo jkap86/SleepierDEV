@@ -1,4 +1,5 @@
 import { avatar } from './functions/misc';
+import tumbleweedgif from '../images/tumbleweed.gif';
 
 const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActive, caption }) => {
 
@@ -23,6 +24,13 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
 
 
         <table className={type}>
+            {
+                caption ?
+                    <caption>
+                        {caption}
+                    </caption>
+                    : null
+            }
             <thead>
                 {
                     headers?.map((header, index) =>
@@ -46,63 +54,76 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                 }
             </thead>
             {
-                body
-                    ?.slice(Math.max(((page || 1) - 1) * 25, 0), (((page || 1) - 1) * 25) + 25)
-                    ?.map((item, index) =>
-                        <tbody key={index}
-                            className={itemActive === item.id ? 'active' : ''}
-                        >
-                            <tr className={`${type}_wrapper ${itemActive === item.id ? 'active' : ''}`}>
-                                <td
-                                    colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}
-                                >
-                                    <table className={`${type}_body`}>
-                                        <tbody>
-                                            <tr
-                                                className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
-                                                onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
-                                            >
+                body.length > 0 ?
+                    body
+                        ?.slice(Math.max(((page || 1) - 1) * 25, 0), (((page || 1) - 1) * 25) + 25)
+                        ?.map((item, index) =>
+                            <tbody key={index}
+                                className={itemActive === item.id ? 'active' : ''}
+                            >
+                                <tr className={`${type}_wrapper ${itemActive === item.id ? 'active' : ''}`}>
+                                    <td
+                                        colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}
+                                    >
+                                        <table className={`${type}_body`}>
+                                            <tbody>
+                                                <tr
+                                                    className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
+                                                    onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
+                                                >
+                                                    {
+                                                        item.list
+                                                            .filter(x => x.text)
+                                                            .map((key, index) =>
+                                                                <td
+                                                                    key={index}
+                                                                    colSpan={key.colSpan}
+                                                                    className={key.className}
+                                                                >
+                                                                    {
+                                                                        key.image ?
+                                                                            <p>
+                                                                                {
+                                                                                    avatar(
+                                                                                        key.image.src, key.image.alt, key.image.type
+                                                                                    )
+                                                                                }
+                                                                                {key.text}
+                                                                            </p>
+                                                                            :
+                                                                            key.text
+                                                                    }
+                                                                </td>
+                                                            )
+                                                    }
+                                                </tr>
                                                 {
-                                                    item.list
-                                                        .filter(x => x.text)
-                                                        .map((key, index) =>
-                                                            <td
-                                                                key={index}
-                                                                colSpan={key.colSpan}
-                                                                className={key.className}
-                                                            >
-                                                                {
-                                                                    key.image ?
-                                                                        <p>
-                                                                            {
-                                                                                avatar(
-                                                                                    key.image.src, key.image.alt, key.image.type
-                                                                                )
-                                                                            }
-                                                                            {key.text}
-                                                                        </p>
-                                                                        :
-                                                                        key.text
-                                                                }
+                                                    (itemActive !== item.id || !item.secondary_table) ? null :
+                                                        <tr className={`${type}2 click ${itemActive === item.id ? 'active' : ''}`}
+                                                        >
+                                                            <td colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}>
+                                                                {item.secondary_table}
                                                             </td>
-                                                        )
+                                                        </tr>
                                                 }
-                                            </tr>
-                                            {
-                                                (itemActive !== item.id || !item.secondary_table) ? null :
-                                                    <tr className={`${type}2 click ${itemActive === item.id ? 'active' : ''}`}
-                                                    >
-                                                        <td colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}>
-                                                            {item.secondary_table}
-                                                        </td>
-                                                    </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    )
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        )
+                    :
+                    <tbody>
+                        <tr>
+                            <td
+                                colSpan={headers[0]?.reduce((acc, cur) => acc + (cur?.colSpan || 0), 0)}
+                            >
+                                <img
+                                    className='gif'
+                                    src={tumbleweedgif} />
+                            </td>
+                        </tr>
+                    </tbody>
             }
         </table>
     </>
