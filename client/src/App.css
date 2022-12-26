@@ -4,6 +4,7 @@ html {
   --color3: midnightblue;
   --color4: #9ca7b4;
   --color5: rgb(0, 0, 25);
+  --color6: #ffae58;
   text-align: center;
   margin: 0;
   background: var(--color5);
@@ -22,10 +23,17 @@ html {
 
 .red {
   color: rgb(255, 0, 0);
+  font-weight: 900;
 }
 
 .green {
   color: rgb(0, 255, 0);
+  font-weight: 900;
+}
+
+.yellow {
+  color: var(--color6);
+  font-weight: 900;
 }
 
 img {
@@ -40,6 +48,15 @@ img.thumbnail {
 
 p {
   margin: 0;
+}
+
+.end:hover {
+  direction: rtl;
+}
+
+.end:hover>p {
+  margin: 0;
+  text-align: right;
 }
 
 .left {
@@ -311,7 +328,7 @@ table.main tbody {
 
 th.small {
   font-size: 80%;
-  ;
+  white-space: initial;
 }
 
 td {
@@ -422,4 +439,26 @@ tr.secondary.active {
   position: sticky;
   top: 14rem;
   z-index: 10;
+}
+
+div.secondary_nav {
+  height: 2.5rem;
+  background-color: inherit;
+}
+
+div.secondary_nav>button {
+  font-size: inherit;
+  background-color: transparent;
+  color: white;
+  border: ridge .1rem var(--color4);
+  opacity: .25;
+  height: 2.5rem;
+  margin: 0 1rem;
+}
+
+div.secondary_nav>button.active {
+  color: var(--color2);
+  border: ridge .1rem var(--color2);
+  opacity: 1;
+  filter: brightness(2);
 }

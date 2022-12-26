@@ -1,4 +1,4 @@
-import TableMain from "./tableMain";
+import TableMain from "../tableMain";
 import { useState } from "react";
 import PlayerLeagues from "./player_leagues";
 
@@ -77,27 +77,33 @@ const Players = ({
                     },
                     {
                         text: player.leagues_owned.length,
-                        colSpan: 1
+                        colSpan: 1,
+                        className: 'green'
                     },
                     {
                         text: ((player.leagues_owned.length / leagues_count) * 100).toFixed(1) + '%',
-                        colSpan: 1
+                        colSpan: 1,
+                        className: 'green'
                     },
                     {
                         text: player.leagues_taken.length,
-                        colSpan: 1
+                        colSpan: 1,
+                        className: 'red'
                     },
                     {
                         text: ((player.leagues_taken.length / leagues_count) * 100).toFixed(1) + '%',
-                        colSpan: 1
+                        colSpan: 1,
+                        className: 'red'
                     },
                     {
                         text: player.leagues_available?.length || '0',
-                        colSpan: 1
+                        colSpan: 1,
+                        className: 'yellow'
                     },
                     {
                         text: ((player.leagues_available.length / leagues_count) * 100).toFixed(1) + '%',
-                        colSpan: 1
+                        colSpan: 1,
+                        className: 'yellow'
                     }
                 ],
                 secondary_table: (

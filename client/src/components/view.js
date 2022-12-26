@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { avatar } from './functions/misc';
-import Leagues from "./leagues";
-import Players from "./players";
-import Leaguemates from "./leaguemates";
-import Lineups from "./lineups";
+import Leagues from "./Leagues/leagues";
+import Players from "./Players/players";
+import Leaguemates from "./Leaguemates/leaguemates";
+import Lineups from "./Lineups/lineups";
 
 const View = ({
     stateAllPlayers,

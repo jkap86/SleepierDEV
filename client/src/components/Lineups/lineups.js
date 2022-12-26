@@ -1,6 +1,6 @@
-import TableMain from "./tableMain";
+import TableMain from '../tableMain';
 import { useState } from "react";
-import { getLineupCheck } from './functions/loadData';
+import { getLineupCheck } from '../functions/loadData';
 import Lineup from "./lineup";
 
 const Lineups = ({

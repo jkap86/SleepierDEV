@@ -1,4 +1,4 @@
-import TableMain from "./tableMain";
+import TableMain from "../tableMain";
 import { useState } from "react";
 
 const Leaguemates = ({
@@ -6,6 +6,7 @@ const Leaguemates = ({
     state_user,
     stateLeaguemates
 }) => {
+    const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
 
     const leaguemates_headers = [
@@ -55,6 +56,7 @@ const Leaguemates = ({
         .sort((a, b) => b.leagues.length - a.leagues.length)
         .map(lm => {
             return {
+                id: lm.user_id,
                 list: [
                     {
                         text: lm.display_name,
@@ -81,7 +83,8 @@ const Leaguemates = ({
                                     ''
                             )
                         ),
-                        colSpan: 2
+                        colSpan: 2,
+                        className: "red"
                     },
                     {
                         text: lm.leagues.reduce(
@@ -93,7 +96,8 @@ const Leaguemates = ({
                                     cur.lmRoster.settings?.fpts_decimal
                                 )
                             , 0).toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
-                        colSpan: 2
+                        colSpan: 2,
+                        className: "red"
                     },
                     {
                         text: (
@@ -106,11 +110,21 @@ const Leaguemates = ({
                                     ''
                             )
                         ),
-                        colSpan: 2
+                        colSpan: 2,
+                        className: "green"
                     },
                     {
-                        text: lm.leagues.reduce((acc, cur) => acc + cur.userRoster.settings?.fpts, 0),
-                        colSpan: 2
+                        text: lm.leagues.reduce(
+                            (acc, cur) =>
+                                acc +
+                                parseFloat(
+                                    cur.userRoster.settings?.fpts +
+                                    '.' +
+                                    cur.userRoster.settings?.fpts_decimal
+                                )
+                            , 0).toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+                        colSpan: 2,
+                        className: "green"
                     }
                 ]
             }
@@ -123,6 +137,8 @@ const Leaguemates = ({
             body={leaguemates_body}
             page={page}
             setPage={setPage}
+            itemActive={itemActive}
+            setItemActive={setItemActive}
         />
     </>
 }

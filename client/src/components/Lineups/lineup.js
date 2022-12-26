@@ -1,4 +1,4 @@
-import TableMain from "./tableMain";
+import TableMain from "../tableMain";
 import { useState } from "react";
 
 const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check, lineup_body }) => {

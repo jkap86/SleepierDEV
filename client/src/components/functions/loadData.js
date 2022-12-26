@@ -11,8 +11,8 @@ export const getLeagueData = (leagues, user_id, week) => {
                 players_all.push({
                     id: player_id,
                     league_id: league.league_id,
-                    league_name: league.name,
-                    league_avatar: league.avatar,
+                    name: league.name,
+                    avatar: league.avatar,
                     status: (
                         roster.starters?.includes(player_id) ?
                             'Starter' :

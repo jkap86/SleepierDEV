@@ -28,15 +28,15 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                     headers?.map((header, index) =>
                         <tr key={index}>
                             {
-                                header.map((key, index) =>
+                                header.filter(x => x).map((key, index) =>
                                     <th
                                         key={index}
-                                        colSpan={key.colSpan}
-                                        rowSpan={key.rowSpan}
-                                        className={key.className}
+                                        colSpan={key?.colSpan}
+                                        rowSpan={key?.rowSpan}
+                                        className={key?.className}
                                     >
                                         {
-                                            key.text
+                                            key?.text
                                         }
                                     </th>
                                 )

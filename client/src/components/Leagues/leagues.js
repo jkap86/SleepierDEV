@@ -1,4 +1,4 @@
-import TableMain from "./tableMain";
+import TableMain from "../tableMain";
 import { useState } from "react";
 
 const Leagues = ({
@@ -7,6 +7,7 @@ const Leagues = ({
     stateLeagues
 }) => {
     const [page, setPage] = useState(1)
+    const [itemActive, setItemActive] = useState('');
 
     const leagues_headers = [
         [
@@ -31,6 +32,7 @@ const Leagues = ({
 
     const leagues_body = stateLeagues.map(league => {
         return {
+            id: league.league_id,
             list: [
                 {
                     text: league.name,
@@ -79,6 +81,8 @@ const Leagues = ({
             body={leagues_body}
             page={page}
             setPage={setPage}
+            itemActive={itemActive}
+            setItemActive={setItemActive}
         />
     </>
 }
