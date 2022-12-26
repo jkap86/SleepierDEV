@@ -7,29 +7,31 @@ const getPrevMatchup = async (axios, league_id, prev_week) => {
 }
 
 const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) => {
-    const cutoff = new Date(new Date() - (60 * 60 * 1000))
+    const cutoff = new Date(new Date() - (2 * 60 * 1000))
     const league_ids = leagues.map(league => league.league_id)
     let leagues_user_db = await leagues_table.findAll({
         where: {
             [Op.and]: {
                 league_id: {
                     [Op.in]: league_ids
+                },
+                updatedAt: {
+                    [Op.lt]: cutoff
                 }
             }
         }
     })
 
     leagues_user_db = leagues_user_db.map(league => league.dataValues)
-    const leagues_to_add = leagues.filter(l => !leagues_user_db.find(l_db => l_db.league_id === l.league_id))
-    const leagues_to_update = leagues_user_db.filter(l_db => l_db.updatedAt < cutoff)
+    const leagues_to_update = leagues.filter(l => !leagues_user_db.find(l_db => l_db.league_id === l.league_id))
 
     let new_leagues = []
 
     let i = 0;
     const increment = 100;
 
-    while (i + increment < [...leagues_to_add, ...leagues_to_update].length + 1) {
-        await Promise.all([...leagues_to_add, ...leagues_to_update]
+    while (i + increment < leagues_to_update.length + 1) {
+        await Promise.all(leagues_to_update
             .slice(i, Math.min(i + increment, [...leagues_to_add, ...leagues_to_update].length + 1))
             .map(async league_to_update => {
                 const [league, users, rosters, matchups] = await Promise.all([
@@ -38,20 +40,6 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
                     await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}/rosters`),
                     await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}/matchups/${week}`)
                 ])
-
-
-                const prevMatchups = []
-
-                await Promise.all(Array.from(Array(week - 1).keys()).map(async key => {
-                    let prevMatchup;
-
-                    if (!league_to_update[`matchups_${key + 1}`]) {
-                        prevMatchup = await getPrevMatchup(axios, league_to_update.league_id, (key + 1))
-                    } else {
-                        prevMatchup = league_to_update[`matchups_${key + 1}`]
-                    }
-                    prevMatchups.push([`matchups_${key + 1}`, prevMatchup])
-                }))
 
                 const new_league = {
                     league_id: league_to_update.league_id,
@@ -64,7 +52,6 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
                     users: users.data,
                     rosters: rosters.data,
                     [`matchups_${week}`]: matchups.data,
-                    ...Object.fromEntries(prevMatchups),
                     updatedAt: Date.now()
                 }
                 new_leagues.push(new_league)
@@ -74,7 +61,7 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
 
     await leagues_table.bulkCreate(new_leagues, {
         updateOnDuplicate: ["name", "avatar", "best_ball", "type", "scoring_settings", "roster_positions",
-            "users", "rosters", `matchups_${week}`, ...Array.from(Array(week - 1).keys()).map(key => `matchups_${key + 1}`), "updatedAt"]
+            "users", "rosters", `matchups_${week}`, "updatedAt"]
     })
 
     return (

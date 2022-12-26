@@ -1,11 +1,13 @@
 import TableMain from "./tableMain";
 import { useState } from "react";
+import PlayerLeagues from "./player_leagues";
 
 const Players = ({
     stateAllPlayers,
     state_user,
     statePlayerShares
 }) => {
+    const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
 
     const playerShares_headers = [
@@ -58,7 +60,13 @@ const Players = ({
                         colSpan: 1
                     }
                 ],
-                secondary_table: 'Active'
+                secondary_table: (
+                    <PlayerLeagues
+                        leagues_owned={player.leagues_owned}
+                        leagues_taken={player.leagues_taken}
+                        leagues_available={player.leagues_available}
+                    />
+                )
             }
         })
 
@@ -69,6 +77,8 @@ const Players = ({
             body={playerShares_body}
             page={page}
             setPage={setPage}
+            itemActive={itemActive}
+            setItemActive={setItemActive}
         />
     </>
 }

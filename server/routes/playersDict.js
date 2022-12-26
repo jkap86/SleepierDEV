@@ -31,7 +31,10 @@ const getPlayersDict = async (axios, season, week) => {
 
                 gametimes[teams_conversion[t.id] || t.id] = {
                     kickoff: m.kickoff,
-                    opponent: teams_conversion[m.team.find(x => x.id !== t.id)?.id] || m.team.find(x => x.id !== t.id)?.id
+                    opponent: teams_conversion[m.team.find(x => x.id !== t.id)?.id]
+                        ||
+                        m.team.find(x => x.id !== t.id)?.id
+
                 }
             })
         })

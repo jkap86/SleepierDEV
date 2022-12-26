@@ -64,23 +64,34 @@ const Lineups = ({
                             .replace('FLEX', 'WRT')
                             .replace('WRRB_FLEX', 'W R')
                             .replace('REC_FLEX', 'W T'),
-                        colSpan: 1,
-                        className: optimal_lineup.find(x => x.player === starter) ? 'green' : 'red'
+                        colSpan: 3,
+                        className: optimal_lineup.includes(starter) ? '' : 'red'
                     },
                     {
                         text: stateAllPlayers[starter]?.full_name || '',
-                        colSpan: 3,
-                        className: optimal_lineup.find(x => x.player === starter) ? 'green' : 'red'
+                        colSpan: 10,
+                        className: optimal_lineup.includes(starter) ? 'left' : 'left red',
+                        image: {
+                            src: starter,
+                            alt: stateAllPlayers[starter]?.full_name,
+                            type: 'player'
+                        }
                     },
                     {
-                        text: stateAllPlayers[starter]?.player_opponent || 'NA',
-                        colSpan: 1,
-                        className: optimal_lineup.find(x => x.player === starter) ? 'green' : 'red'
+                        text: stateAllPlayers[starter]?.player_opponent
+                            .replace('at', '@')
+                            .replace('vs.', '')
+                            .replace(/\s/g, '')
+                            .trim()
+                            ||
+                            'NA',
+                        colSpan: 3,
+                        className: optimal_lineup.includes(starter) ? '' : 'red',
                     },
                     {
                         text: stateAllPlayers[starter]?.rank_ecr || 999,
-                        colSpan: 1,
-                        className: optimal_lineup.find(x => x.player === starter) ? 'green' : 'red'
+                        colSpan: 3,
+                        className: optimal_lineup.includes(starter) ? '' : 'red'
                     }
                 ]
             }
@@ -134,7 +145,7 @@ const Lineups = ({
             ],
             secondary_table: (
                 <Lineup
-                    roster_positions={matchup_league.league.roster_positions}
+                    league={matchup_league.league}
                     optimal_lineup={optimal_lineup}
                     stateAllPlayers={stateAllPlayers}
                     matchup={matchup}

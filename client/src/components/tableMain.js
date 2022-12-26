@@ -1,6 +1,6 @@
 import { avatar } from './functions/misc';
 
-const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActive }) => {
+const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActive, caption }) => {
 
     return <>
         {
@@ -45,16 +45,18 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                 body
                     ?.slice(Math.max(((page || 1) - 1) * 25, 0), (((page || 1) - 1) * 25) + 25)
                     ?.map((item, index) =>
-                        <tbody key={index}>
-                            <tr className={`${type}_wrapper`}>
+                        <tbody key={index}
+                            className={itemActive === item.id ? 'active' : ''}
+                        >
+                            <tr className={`${type}_wrapper ${itemActive === item.id ? 'active' : ''}`}>
                                 <td
                                     colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}
                                 >
                                     <table className={`${type}_body`}>
                                         <tbody>
                                             <tr
-                                                className={`${type} click`}
-                                                onClick={() => setItemActive(prevState => prevState === item.id ? '' : item.id)}
+                                                className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
+                                                onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
                                             >
                                                 {
                                                     item.list
@@ -84,7 +86,8 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                                             </tr>
                                             {
                                                 (itemActive !== item.id || !item.secondary_table) ? null :
-                                                    <tr>
+                                                    <tr className={`${type}2 click ${itemActive === item.id ? 'active' : ''}`}
+                                                    >
                                                         <td colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}>
                                                             {item.secondary_table}
                                                         </td>

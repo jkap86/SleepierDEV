@@ -1,7 +1,7 @@
 import TableMain from "./tableMain";
 import { useState } from "react";
 
-const Lineup = ({ roster_positions, optimal_lineup, stateAllPlayers, matchup, lineup_check, lineup_body }) => {
+const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check, lineup_body }) => {
     const [itemActive, setItemActive] = useState(null);
 
     console.log({
@@ -9,6 +9,60 @@ const Lineup = ({ roster_positions, optimal_lineup, stateAllPlayers, matchup, li
         matchup: matchup,
         lineup_check: lineup_check
     })
+
+    const lineup_headers = [
+        [
+            {
+                text: 'Lineup',
+                colSpan: 19
+            }
+        ],
+        [
+            {
+                text: 'Slot',
+                colSpan: 3
+            },
+            {
+                text: 'Player',
+                colSpan: 10
+            },
+            {
+                text: 'Opp',
+                colSpan: 3
+            },
+            {
+                text: 'Rank',
+                colSpan: 3
+            }
+        ]
+    ]
+
+    const subs_headers = [
+        [
+            {
+                text: itemActive ? 'Subs' : 'Optimal Lineup',
+                colSpan: 19
+            }
+        ],
+        [
+            {
+                text: 'Slot',
+                colSpan: 3
+            },
+            {
+                text: 'Player',
+                colSpan: 10
+            },
+            {
+                text: 'Opp',
+                colSpan: 3
+            },
+            {
+                text: 'Rank',
+                colSpan: 3
+            }
+        ]
+    ]
 
     const subs_body = itemActive ?
         lineup_check.find(x => x.current_player === itemActive)?.slot_options
@@ -19,20 +73,36 @@ const Lineup = ({ roster_positions, optimal_lineup, stateAllPlayers, matchup, li
                     list: [
                         {
                             text: 'BN',
-                            colSpan: 1,
-                            className: optimal_lineup.find(x => x.player === so) ? 'green' : 'red'
+                            colSpan: 3,
+                            className: optimal_lineup.includes(so) ? 'green' :
+                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'red' : ''
                         },
                         {
                             text: stateAllPlayers[so]?.full_name,
-                            colSpan: 3
+                            colSpan: 10,
+                            className: optimal_lineup.includes(so) ? 'left green' :
+                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'left red' : 'left',
+                            image: {
+                                src: so,
+                                alt: stateAllPlayers[so]?.full_name,
+                                type: 'player'
+                            }
                         },
                         {
-                            text: stateAllPlayers[so]?.player_opponent,
-                            colSpan: 1
+                            text: stateAllPlayers[so]?.player_opponent
+                                .replace('at', '@')
+                                .replace('vs.', '')
+                                .replace(/\s/g, '')
+                                .trim(),
+                            colSpan: 3,
+                            className: optimal_lineup.includes(so) ? 'green' :
+                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'red' : ''
                         },
                         {
                             text: stateAllPlayers[so]?.rank_ecr,
-                            colSpan: 1
+                            colSpan: 3,
+                            className: optimal_lineup.includes(so) ? 'green' :
+                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'red' : ''
                         }
                     ]
                 }
@@ -46,27 +116,36 @@ const Lineup = ({ roster_positions, optimal_lineup, stateAllPlayers, matchup, li
                 id: ol,
                 list: [
                     {
-                        text: roster_positions[index]
+                        text: league.roster_positions[index]
                             .replace('SUPER_FLEX', 'SF')
                             .replace('FLEX', 'WRT')
                             .replace('WRRB_FLEX', 'W R')
                             .replace('REC_FLEX', 'W T'),
-                        colSpan: 1,
-                        className: 'green'
-                    },
-                    {
-                        text: stateAllPlayers[ol.player]?.full_name,
                         colSpan: 3,
                         className: 'green'
                     },
                     {
-                        text: stateAllPlayers[ol.player]?.player_opponent,
-                        colSpan: 1,
+                        text: stateAllPlayers[ol]?.full_name,
+                        colSpan: 10,
+                        className: 'left green',
+                        image: {
+                            src: ol,
+                            alt: stateAllPlayers[ol]?.full_name,
+                            type: 'player'
+                        }
+                    },
+                    {
+                        text: stateAllPlayers[ol]?.player_opponent
+                            .replace('at', '@')
+                            .replace('vs.', '')
+                            .replace(/\s/g, '')
+                            .trim(),
+                        colSpan: 3,
                         className: 'green'
                     },
                     {
-                        text: stateAllPlayers[ol.player]?.rank_ecr,
-                        colSpan: 1,
+                        text: stateAllPlayers[ol]?.rank_ecr,
+                        colSpan: 3,
                         className: 'green'
                     }
                 ]
@@ -76,17 +155,15 @@ const Lineup = ({ roster_positions, optimal_lineup, stateAllPlayers, matchup, li
     return <>
         <TableMain
             type={'secondary lineup'}
-            headers={[[{ text: 'Slot', colSpan: 1 }, { text: 'Player', colSpan: 3 }, { text: 'Opp', colSpan: 1 }, { text: 'Rank', colSpan: 1 }]]}
+            headers={lineup_headers}
             body={lineup_body}
             itemActive={itemActive}
             setItemActive={setItemActive}
         />
         <TableMain
             type={'secondary subs'}
-            headers={[[{ text: 'Slot', colSpan: 1 }, { text: 'Player', colSpan: 3 }, { text: 'Opp', colSpan: 1 }, { text: 'Rank', colSpan: 1 }]]}
+            headers={subs_headers}
             body={subs_body}
-            itemActive={itemActive}
-            setItemActive={setItemActive}
         />
     </>
 }
