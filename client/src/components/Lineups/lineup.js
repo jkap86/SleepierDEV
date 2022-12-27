@@ -1,6 +1,7 @@
 import TableMain from "../tableMain";
 import { useState } from "react";
 import tumbleweedgif from '../../images/tumbleweed.gif';
+import reload from '../../images/reload.png';
 
 const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_check, lineup_body, syncLeague }) => {
     const [itemActive, setItemActive] = useState(null);
@@ -157,11 +158,10 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
     return <>
         <div className="secondary nav">
             <button
-                className="sync click"
-                onClick={() => handleSync(league.league_id, state_user.user_id)}
-                style={{ visibility: `${syncing ? 'hidden' : ''}` }}
+                className={`sync ${syncing ? '' : 'click'}`}
+                onClick={syncing ? null : () => handleSync(league.league_id, state_user.user_id)}
             >
-                Sync
+                <i className={`fa-solid fa-arrows-rotate ${syncing ? 'rotate' : ''}`}></i>
             </button>
         </div>
         {lineup_body?.length > 0 ?

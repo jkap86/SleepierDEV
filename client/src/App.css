@@ -494,3 +494,17 @@ div.secondary.nav>button.sync {
   margin: auto;
   align-self: flex-end;
 }
+
+
+
+/* Animations */
+
+.rotate {
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
