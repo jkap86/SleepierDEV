@@ -2,14 +2,14 @@ import TableMain from "../tableMain";
 import { useState } from "react";
 import tumbleweedgif from '../../images/tumbleweed.gif';
 
-const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check, lineup_body }) => {
+const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_check, lineup_body, syncLeague }) => {
     const [itemActive, setItemActive] = useState(null);
     const [syncing, setSyncing] = useState(false)
 
 
-    const handleSync = () => {
+    const handleSync = (league_id, user_id) => {
         setSyncing(true)
-
+        syncLeague(league_id, user_id)
         setTimeout(() => {
             setSyncing(false)
         }, 5000)
@@ -157,8 +157,8 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check
     return <>
         <div className="secondary nav">
             <button
-                className="sync"
-                onClick={() => handleSync()}
+                className="sync click"
+                onClick={() => handleSync(league.league_id, state_user.user_id)}
                 style={{ visibility: `${syncing ? 'hidden' : ''}` }}
             >
                 Sync

@@ -460,6 +460,7 @@ tr.secondary.active {
 div.nav {
   height: 3rem;
   background-color: inherit;
+  display: flex;
 }
 
 div.primary.nav {
@@ -481,4 +482,15 @@ div.nav>button.active {
   border: ridge .1rem var(--color2);
   opacity: 1;
   filter: brightness(2);
+}
+
+div.secondary.nav>button.sync {
+  padding: .25rem;
+  height: 75%;
+  opacity: 1;
+  background-color: var(--color2);
+  color: var(--color1);
+  font-weight: 900;
+  margin: auto;
+  align-self: flex-end;
 }

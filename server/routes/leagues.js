@@ -24,7 +24,7 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
 
     leagues_user_db = leagues_user_db.map(league => league.dataValues)
     const leagues_to_update = leagues.filter(l => !leagues_user_db.find(l_db => l_db.league_id === l.league_id))
-    console.log(leagues_user_db, leagues_to_update)
+
     let new_leagues = []
 
     let i = 0;
@@ -97,11 +97,12 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
     )
 }
 
-const updateLeague = async (axios, leagues_table, league_id, user_id) => {
-    const [league, rosters, users] = await Promise.all([
+const updateLeague = async (axios, leagues_table, league_id, user_id, week) => {
+    const [league, rosters, users, matchups] = await Promise.all([
         await axios.get(`http://api.sleeper.app/v1/league/${league_id}`),
         await axios.get(`http://api.sleeper.app/v1/league/${league_id}/rosters`),
-        await axios.get(`http://api.sleeper.app/v1/league/${league_id}/users`)
+        await axios.get(`http://api.sleeper.app/v1/league/${league_id}/users`),
+        await axios.get(`https://api.sleeper.app/v1/league/${league_id}/matchups/${week}`)
     ])
     rosters.data
         .sort((a, b) => b.settings.fpts - a.settings.fpts)
@@ -130,6 +131,7 @@ const updateLeague = async (axios, leagues_table, league_id, user_id) => {
             type: league.data.settings.type,
             scoring_settings: league.data.scoring_settings,
             roster_positions: league.data.roster_positions,
+            [`matchups_${week}`]: matchups.data,
             users: users.data,
             rosters: rosters.data
         }, {
@@ -137,10 +139,11 @@ const updateLeague = async (axios, leagues_table, league_id, user_id) => {
                 league_id: league_id
             }
         })
-        console.log({ sync: new_league })
+
         return {
             ...league.data,
             rosters: rosters.data,
+            [`matchups_${week}`]: matchups.data,
             users: users.data,
             userRoster: userRoster,
             standings: standings

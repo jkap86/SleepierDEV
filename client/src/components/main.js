@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import axios, { all } from 'axios';
+import axios from 'axios';
 import sleeperLogo from '../images/sleeper_icon.png';
 import View from "./view";
 import { getLeagueData } from './functions/loadData';
@@ -15,6 +15,37 @@ const Main = () => {
     const [stateLeaguemates, setStateLeaguemates] = useState([]);
     const [statePlayerShares, setStatePlayerShares] = useState([]);
     const [stateMatchups, setStateMatchups] = useState([]);
+
+    const syncLeague = async (league_id, user_id) => {
+        const sync = await axios.get('/syncleague', {
+            params: {
+                league_id: league_id,
+                user_id: user_id
+            }
+        })
+
+        console.log(sync)
+        const leagues = stateLeagues
+        const leaguesSynced = leagues.map(league => {
+            if (league.league_id === sync.data.league_id) {
+                league = {
+                    ...sync.data,
+                    index: league.index
+                }
+            }
+            return league
+        })
+        setStateLeagues([...leaguesSynced])
+
+
+
+        const data = getLeagueData(leaguesSynced, state_user.user_id, stateState.week)
+
+        setStatePlayerShares(data.players)
+        setStateLeaguemates(data.leaguemates)
+        setStateMatchups(data.matchups)
+
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,11 +68,11 @@ const Main = () => {
                 setStateAllPlayers(allplayers.data)
 
                 const data = getLeagueData(user.data.leagues, user.data.user.user_id, user.data.state.week)
+
                 setStatePlayerShares(data.players)
                 setStateLeaguemates(data.leaguemates)
                 setStateMatchups(data.matchups)
 
-                console.log(user.data)
 
             } else {
                 setState_User('Invalid')
@@ -64,6 +95,7 @@ const Main = () => {
             stateLeaguemates={stateLeaguemates}
             statePlayerShares={statePlayerShares}
             stateMatchups={stateMatchups}
+            syncLeague={syncLeague}
         />
     </>
 }

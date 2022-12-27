@@ -13,7 +13,8 @@ const View = ({
     stateLeagues,
     stateLeaguemates,
     statePlayerShares,
-    stateMatchups
+    stateMatchups,
+    syncLeague
 }) => {
     const [stateLeaguesFiltered, setStateLeaguesFiltered] = useState([]);
     const [statePlayerSharesFiltered, setStatePlayerSharesFiltered] = useState([]);
@@ -195,8 +196,9 @@ const View = ({
         }
         fetchFiltered()
 
-    }, [stateLeagues, statePlayerShares, stateLeaguemates, type1, type2])
+    }, [state_user, stateLeagues, statePlayerShares, stateLeaguemates, stateMatchups, syncLeague, type1, type2])
 
+    console.log(stateMatchups)
 
     let display;
     switch (tab) {
@@ -206,6 +208,7 @@ const View = ({
                 stateAllPlayers={stateAllPlayers}
                 state_user={state_user}
                 stateMatchups={stateMatchupsFiltered}
+                syncLeague={syncLeague}
             />
             break;
         case 'Leagues':

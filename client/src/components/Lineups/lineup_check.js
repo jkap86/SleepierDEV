@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getLineupCheck } from '../functions/loadData';
 import Lineup from "./lineup";
 
-const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, tab, setTab }) => {
+const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, tab, setTab, syncLeague }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
 
@@ -145,9 +145,10 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
                     league={matchup_league.league}
                     optimal_lineup={optimal_lineup}
                     stateAllPlayers={stateAllPlayers}
-                    matchup={matchup}
+                    state_user={state_user}
                     lineup_check={lineup_check}
                     lineup_body={lineup_body}
+                    syncLeague={syncLeague}
                 />
             )
         }

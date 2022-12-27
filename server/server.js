@@ -68,7 +68,7 @@ app.get('/user', async (req, res, next) => {
 app.get('/syncleague', async (req, res) => {
     const league_id = req.query.league_id
     const user_id = req.query.user_id
-    const league = await updateLeague(axios, app.get('leagues_table'), league_id, user_id)
+    const league = await updateLeague(axios, app.get('leagues_table'), league_id, user_id, app.get('state').week)
     res.send(league)
 })
 
