@@ -129,7 +129,7 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
     const starting_slots = league.roster_positions.filter(x => Object.keys(position_map).includes(x))
 
     let player_ranks = []
-    matchup.players.map(player_id => {
+    matchup?.players?.map(player_id => {
         player_ranks.push({
             id: player_id,
             rank: stateAllPlayers[player_id]?.rank_ecr || 999
@@ -157,22 +157,23 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
     const findSuboptimal = () => {
         let lineup_check = []
         starting_slots.map((slot, index) => {
-            const cur_id = matchup.starters[index]
+            const cur_id = matchup?.starters[index]
             const isInOptimal = optimal_lineup.includes(cur_id)
 
             return lineup_check.push({
                 index: index,
                 slot: slot,
-                current_player: matchup.starters[index],
+                current_player: matchup?.starters[index],
                 notInOptimal: !isInOptimal,
                 earlyInFlex: false,
                 lateNotInFlex: false,
-                nonQBinSF: position_map[slot].includes('QB') && stateAllPlayers[matchup.starters[index]]?.position !== 'QB',
-                slot_options: matchup.players
+                nonQBinSF: position_map[slot].includes('QB') && stateAllPlayers[matchup?.starters[index]]?.position !== 'QB',
+                slot_options: matchup?.players
                     .filter(x =>
                         !matchup.starters.includes(x) &&
                         position_map[slot].includes(stateAllPlayers[x]?.position)
                     )
+                    || []
             })
         })
         return lineup_check

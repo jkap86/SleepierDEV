@@ -54,7 +54,7 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                 }
             </thead>
             {
-                body.length > 0 ?
+                body?.length > 0 ?
                     body
                         ?.slice(Math.max(((page || 1) - 1) * 25, 0), (((page || 1) - 1) * 25) + 25)
                         ?.map((item, index) =>

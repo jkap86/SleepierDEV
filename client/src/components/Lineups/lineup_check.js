@@ -44,12 +44,12 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
     ]
 
     const lineups_body = stateMatchups.map(matchup_league => {
-        const matchup = matchup_league[`matchups_${stateState.week}`].find(x => x.roster_id === matchup_league.league.userRoster.roster_id)
+        const matchup = matchup_league[`matchups_${stateState.week}`]?.find(x => x.roster_id === matchup_league.league.userRoster.roster_id)
         let lineups = getLineupCheck(matchup, matchup_league.league, stateAllPlayers)
         const optimal_lineup = lineups.optimal_lineup
         const lineup_check = lineups.lineup_check
 
-        const lineup_body = matchup.starters.map((starter, index) => {
+        const lineup_body = matchup?.starters.map((starter, index) => {
             return {
                 id: starter,
                 list: [

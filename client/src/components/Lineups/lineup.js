@@ -1,14 +1,19 @@
 import TableMain from "../tableMain";
 import { useState } from "react";
+import tumbleweedgif from '../../images/tumbleweed.gif';
 
 const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check, lineup_body }) => {
     const [itemActive, setItemActive] = useState(null);
+    const [syncing, setSyncing] = useState(false)
 
-    console.log({
-        optimal_lineup: optimal_lineup,
-        matchup: matchup,
-        lineup_check: lineup_check
-    })
+
+    const handleSync = () => {
+        setSyncing(true)
+
+        setTimeout(() => {
+            setSyncing(false)
+        }, 5000)
+    }
 
     const lineup_headers = [
         [
@@ -107,10 +112,7 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check
                     ]
                 }
             })
-
-
         :
-
         optimal_lineup.map((ol, index) => {
             return {
                 id: ol,
@@ -153,18 +155,37 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, matchup, lineup_check
         })
 
     return <>
-        <TableMain
-            type={'secondary lineup'}
-            headers={lineup_headers}
-            body={lineup_body}
-            itemActive={itemActive}
-            setItemActive={setItemActive}
-        />
-        <TableMain
-            type={'secondary subs'}
-            headers={subs_headers}
-            body={subs_body}
-        />
+        <div className="secondary nav">
+            <button
+                className="sync"
+                onClick={() => handleSync()}
+                style={{ visibility: `${syncing ? 'hidden' : ''}` }}
+            >
+                Sync
+            </button>
+        </div>
+        {lineup_body?.length > 0 ?
+            <>
+                <TableMain
+                    type={'secondary lineup'}
+                    headers={lineup_headers}
+                    body={lineup_body}
+                    itemActive={itemActive}
+                    setItemActive={setItemActive}
+                />
+
+                <TableMain
+                    type={'secondary subs'}
+                    headers={subs_headers}
+                    body={subs_body}
+                />
+            </>
+            :
+            <div>
+                <h1>No Matchups</h1>
+                <img src={tumbleweedgif} alt={'tumbleweed gif'} className='gif' />
+            </div>
+        }
     </>
 }
 
