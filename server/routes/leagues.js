@@ -7,7 +7,7 @@ const getPrevMatchup = async (axios, league_id, prev_week) => {
 }
 
 const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) => {
-    const cutoff = new Date(new Date() - (2 * 60 * 1000))
+    const cutoff = new Date(new Date() - (15 * 60 * 1000))
     const league_ids = leagues.map(league => league.league_id)
     let leagues_user_db = await leagues_table.findAll({
         where: {
@@ -16,7 +16,7 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
                     [Op.in]: league_ids
                 },
                 updatedAt: {
-                    [Op.lt]: cutoff
+                    [Op.gt]: cutoff
                 }
             }
         }
