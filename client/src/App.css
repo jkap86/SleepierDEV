@@ -461,6 +461,7 @@ div.nav {
   height: 3rem;
   background-color: inherit;
   display: flex;
+  justify-content: center;
 }
 
 div.primary.nav {
