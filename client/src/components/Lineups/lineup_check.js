@@ -48,11 +48,13 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
         let lineups = getLineupCheck(matchup, matchup_league.league, stateAllPlayers)
         const optimal_lineup = lineups.optimal_lineup
         const lineup_check = lineups.lineup_check
+        const starting_slots = lineups.starting_slots
 
-        const lineup_body = matchup?.starters.map((starter, index) => {
+        const lineup_body = (starting_slots || []).map((slot, index) => {
+            const starter = matchup?.starters ? matchup.starters[index] : 'Empty'
             return {
                 id: starter,
-                list: [
+                list: !matchup ? [] : [
                     {
                         text: matchup_league.league.roster_positions[index]
                             .replace('SUPER_FLEX', 'SF')
@@ -63,7 +65,7 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
                         className: optimal_lineup.includes(starter) ? '' : 'red'
                     },
                     {
-                        text: stateAllPlayers[starter]?.full_name || '',
+                        text: stateAllPlayers[starter]?.full_name || 'Empty',
                         colSpan: 10,
                         className: optimal_lineup.includes(starter) ? 'left' : 'left red',
                         image: {
