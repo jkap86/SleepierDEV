@@ -153,7 +153,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                     </tbody>
             }
             {
-                (((page - 1) * 25) + 25) < body.length ?
+                (((page - 1) * 25) + 25) < body?.length ?
                     <tbody>
                         <tr
                             className={'click'}

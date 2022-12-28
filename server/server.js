@@ -29,17 +29,23 @@ const db = new Sequelize(connectionString, { dialect: 'postgres', dialectOptions
 bootServer(app, axios, db)
 
 const date = new Date()
+const now = Date.now()
 const hour = date.getHours()
 const minute = date.getMinutes()
-const delay = ((Math.max(4 - hour, 28 - hour) * 60) + (60 - minute)) * 60 * 1000
+const tzOffset = date.getTimezoneOffset()
+const delay = (((32 - hour) * 60) + (60 - minute)) * 60 * 1000
 setTimeout(async () => {
-    setInterval(async () =>
-        sync_daily(app, axios, app.get('leagues_table')), 24 * 60 * 60 * 1 * 1000)
+    setInterval(async () => {
+        sync_daily(app, axios, app.get('leagues_table'))
+        console.log(`Daily Sync completed at ${new Date()}`)
+    }, 24 * 60 * 60 * 1 * 1000)
 }, delay)
 
 setInterval(async () => {
     rankings_sync(app, axios)
-}, 5 * 60 * 1000)
+    console.log('Weekly Rankings Updated at ' + new Date())
+    console.log(`UTC offset - ${new Date(now + (tzOffset * 60 * 1000))}`)
+}, 1 * 60 * 1000)
 
 app.get('/user', async (req, res, next) => {
     const user = await getUser(axios, req.query.username)

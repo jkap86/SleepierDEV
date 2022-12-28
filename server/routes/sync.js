@@ -35,7 +35,7 @@ const rankings_sync = async (app, axios) => {
         }
     })
     app.set('allplayers', allplayers)
-    console.log('Weekly Rankings Updated at ' + new Date())
+
 }
 
 module.exports = {
