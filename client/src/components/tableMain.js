@@ -5,10 +5,10 @@ import Search from './search';
 
 const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search, searched, setSearched }) => {
 
-    const body_filtered = searched === '' ?
+    const body_filtered = searched === '' || !searched ?
         body
         :
-        body.filter(x => x.search.text === searched.text)
+        body.filter(x => x.search?.text === searched.text)
 
 
     return <>
@@ -105,7 +105,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                                             <tbody>
                                                 <tr
                                                     className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
-                                                    onClick={setItemActive ? () => setItemActive(prevState => prevState.toString() === item.id.toString() ? '' : item.id) : null}
+                                                    onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
                                                 >
                                                     {
                                                         item.list

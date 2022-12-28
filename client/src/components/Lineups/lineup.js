@@ -7,6 +7,7 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
     const [itemActive, setItemActive] = useState(null);
     const [syncing, setSyncing] = useState(false)
 
+    console.log(itemActive)
 
     const handleSync = (league_id, user_id) => {
         setSyncing(true)
@@ -71,7 +72,7 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
     ]
 
     const subs_body = itemActive ?
-        lineup_check.find(x => x.current_player === itemActive)?.slot_options
+        lineup_check.find(x => `${x.slot}_${x.index}` === itemActive)?.slot_options
             ?.sort((a, b) => stateAllPlayers[a]?.rank_ecr - stateAllPlayers[b]?.rank_ecr)
             ?.map((so, index) => {
                 return {

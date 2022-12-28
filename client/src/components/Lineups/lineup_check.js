@@ -54,7 +54,12 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
         const lineup_body = (starting_slots || []).map((slot, index) => {
             const starter = matchup?.starters ? matchup.starters[index] : 'Empty'
             return {
-                id: starter,
+                id: `${slot}_${index}`,
+                image: {
+                    src: starter,
+                    alt: 'player photo',
+                    type: 'player'
+                },
                 list: !matchup ? [] : [
                     {
                         text: matchup_league.league.roster_positions[index]
@@ -158,6 +163,8 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
                     lineup_check={lineup_check}
                     lineup_body={lineup_body}
                     syncLeague={syncLeague}
+                    searched={searched}
+                    setSearched={setSearched}
                 />
             )
         }
