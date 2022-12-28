@@ -156,18 +156,14 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
 
     const caption = (
         <div className="primary nav">
-            <button
-                className={tab === 'Weekly Rankings' ? 'active click' : 'click'}
-                onClick={() => setTab('Weekly Rankings')}
+            <select
+                className={'click'}
+                onChange={(e) => setTab(e.target.value)}
             >
-                Weekly Rankings
-            </button>
-            <button
-                className={tab === 'Lineup Check' ? 'active click' : 'click'}
-                onClick={() => setTab('Lineup Check')}
-            >
-                Lineup Check
-            </button>
+                <option>Lineup Check</option>
+                <option>{`Week ${stateState.week} Rankings`}</option>
+            </select>
+            <i className="fa-regular fa-rectangle-list"></i>
         </div>
     )
 

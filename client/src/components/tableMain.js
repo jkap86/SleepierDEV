@@ -1,9 +1,23 @@
+import { useState } from 'react';
 import { avatar } from './functions/misc';
 import tumbleweedgif from '../images/tumbleweed.gif';
+import Search from './search';
 
-const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActive, caption }) => {
+const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search }) => {
+    const [searched, setSearched] = useState('')
 
     return <>
+        {
+            search ?
+                <Search
+                    id={id}
+                    sendSearched={(data) => setSearched(data)}
+                    placeholder={'Search Players'}
+                    list={body.map(b => b.search)}
+                />
+                :
+                null
+        }
         {
 
             page ?
@@ -54,6 +68,19 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                 }
             </thead>
             {
+                page > 1 ?
+                    <tbody>
+                        <tr
+                            className={'click'}
+                            onClick={() => setPage(prevState => prevState - 1)}
+                        >
+                            <td colSpan={headers[0].reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}>PREV PAGE</td>
+                        </tr>
+                    </tbody>
+                    :
+                    null
+            }
+            {
                 body?.length > 0 ?
                     body
                         ?.slice(Math.max(((page || 1) - 1) * 25, 0), (((page || 1) - 1) * 25) + 25)
@@ -63,7 +90,7 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                             >
                                 <tr className={`${type}_wrapper ${itemActive === item.id ? 'active' : ''}`}>
                                     <td
-                                        colSpan={item.list.reduce((acc, cur) => acc + cur.colSpan, 0)}
+                                        colSpan={item.list.reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}
                                     >
                                         <table className={`${type}_body`}>
                                             <tbody>
@@ -124,6 +151,19 @@ const TableMain = ({ type, headers, body, page, setPage, itemActive, setItemActi
                             </td>
                         </tr>
                     </tbody>
+            }
+            {
+                (((page - 1) * 25) + 25) < body.length ?
+                    <tbody>
+                        <tr
+                            className={'click'}
+                            onClick={() => setPage(prevState => prevState + 1)}
+                        >
+                            <td colSpan={headers[0].reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}>NEXT PAGE</td>
+                        </tr>
+                    </tbody>
+                    :
+                    null
             }
         </table>
     </>

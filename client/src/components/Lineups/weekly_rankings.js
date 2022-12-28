@@ -1,25 +1,21 @@
 import TableMain from '../tableMain';
 import { useState } from "react";
 
-const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
+const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
 
 
     const caption = (
         <div className="primary nav">
-            <button
-                className={tab === 'Weekly Rankings' ? 'active click' : 'click'}
-                onClick={() => setTab('Weekly Rankings')}
+            <select
+                onChange={(e) => setTab(e.target.value)}
+                className={'click'}
             >
-                {`Week ${stateState.week} Rankings`}
-            </button>
-            <button
-                className={tab === 'Lineup Check' ? 'active click' : 'click'}
-                onClick={() => setTab('Lineup Check')}
-            >
-                Lineup Check
-            </button>
+                <option>{`Week ${stateState.week} Rankings`}</option>
+                <option>Lineup Check</option>
+            </select>
+            <i className="fa-regular fa-rectangle-list"></i>
         </div>
     )
 
@@ -52,6 +48,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
             const kickoff = new Date(parseInt(stateAllPlayers[player_id]?.gametime) * 1000)
             return {
                 id: player_id,
+                search: stateAllPlayers[player_id].full_name,
                 list: [
                     {
                         text: stateAllPlayers[player_id]?.full_name,
@@ -82,6 +79,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
     return <>
         {caption}
         <TableMain
+            id={'Weekly Rankings'}
             type={'main'}
             headers={weekly_rankings_headers}
             body={weekly_rankings_body}
@@ -89,6 +87,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, tab, setTab }) => {
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
+
         />
     </>
 }
