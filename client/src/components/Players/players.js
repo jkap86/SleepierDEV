@@ -11,6 +11,8 @@ const Players = ({
 }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
+    const [searched, setSearched] = useState('')
+
 
     const playerShares_headers = [
         [
@@ -61,10 +63,19 @@ const Players = ({
     ]
 
     const playerShares_body = statePlayerShares
+        .filter(x => stateAllPlayers[x.id])
         .sort((a, b) => b.leagues_owned.length - a.leagues_owned.length)
         .map(player => {
             return {
                 id: player.id,
+                search: {
+                    text: stateAllPlayers[player.id].full_name,
+                    image: {
+                        src: player.id,
+                        alt: 'player photo',
+                        type: 'player'
+                    }
+                },
                 list: [
                     {
                         text: stateAllPlayers[player.id]?.full_name || `INACTIVE PLAYER`,
@@ -126,6 +137,9 @@ const Players = ({
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
+            search={true}
+            searched={searched}
+            setSearched={setSearched}
         />
     </>
 }

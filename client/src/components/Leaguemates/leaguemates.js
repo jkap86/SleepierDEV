@@ -8,6 +8,7 @@ const Leaguemates = ({
 }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
+    const [searched, setSearched] = useState('')
 
     const leaguemates_headers = [
         [
@@ -57,6 +58,14 @@ const Leaguemates = ({
         .map(lm => {
             return {
                 id: lm.user_id,
+                search: {
+                    text: lm.display_name,
+                    image: {
+                        src: lm.avatar,
+                        alt: 'user avatar',
+                        type: 'user'
+                    }
+                },
                 list: [
                     {
                         text: lm.display_name,
@@ -139,6 +148,9 @@ const Leaguemates = ({
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
+            search={true}
+            searched={searched}
+            setSearched={setSearched}
         />
     </>
 }

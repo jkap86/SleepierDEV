@@ -8,6 +8,7 @@ const Leagues = ({
 }) => {
     const [page, setPage] = useState(1)
     const [itemActive, setItemActive] = useState('');
+    const [searched, setSearched] = useState('')
 
     const leagues_headers = [
         [
@@ -33,6 +34,14 @@ const Leagues = ({
     const leagues_body = stateLeagues.map(league => {
         return {
             id: league.league_id,
+            search: {
+                text: league.name,
+                image: {
+                    src: league.avatar,
+                    alt: 'league avatar',
+                    type: 'league'
+                }
+            },
             list: [
                 {
                     text: league.name,
@@ -83,6 +92,9 @@ const Leagues = ({
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
+            search={true}
+            searched={searched}
+            setSearched={setSearched}
         />
     </>
 }
