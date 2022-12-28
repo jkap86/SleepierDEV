@@ -6,6 +6,7 @@ import Lineup from "./lineup";
 const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, tab, setTab, syncLeague }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
+    const [searched, setSearched] = useState('')
 
     const lineups_headers = [
         [
@@ -96,6 +97,14 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
 
         return {
             id: matchup_league.league.league_id,
+            search: {
+                text: matchup_league.league.name,
+                image: {
+                    src: matchup_league.league.avatar,
+                    alt: matchup_league.league.name,
+                    type: 'league'
+                }
+            },
             list: [
                 {
                     text: matchup_league.league.name,
@@ -177,6 +186,9 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
+            search={true}
+            searched={searched}
+            setSearched={setSearched}
         />
     </>
 }

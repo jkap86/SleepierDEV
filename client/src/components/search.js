@@ -15,7 +15,8 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
         sendSearched(playerFound)
     }, [playerFound])
 
-    const handleSearch = (s) => {
+    const handleSearch = (input) => {
+        let s = input
         let options;
         let visible;
 
@@ -23,17 +24,17 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
             options = [];
             visible = false
             setPlayerFound(s)
-        } else if (list.map(x => x.text).includes(s)) {
-            const option = list.find(x => x.text === s)
+        } else if (list.map(x => x.text.trim().toLowerCase()).includes(s.trim().toLowerCase())) {
+            const option = list.find(x => x.text.trim().toLowerCase() === s.trim().toLowerCase())
             options = []
             visible = false
             setPlayerFound(option)
         } else {
             const all_options = list
             options = all_options.filter(x =>
-                x.text.toLowerCase()
+                x.text.trim().toLowerCase()
                     .replace("'", '')
-                    .includes(s.toLowerCase()))
+                    .includes(s.trim().toLowerCase()))
             visible = true
         }
         setDropdownVisible(visible)
@@ -59,7 +60,7 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
                 id={id === undefined ? null : id}
                 placeholder={placeholder}
                 type="text"
-                value={searched.text || searched}
+                value={playerFound.text || searched}
                 autoComplete={'off'}
             />
             {

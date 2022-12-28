@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { avatar } from './functions/misc';
 import tumbleweedgif from '../images/tumbleweed.gif';
 import Search from './search';
 
-const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search }) => {
-    const [searched, setSearched] = useState('')
+const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search, searched, setSearched }) => {
+
+    const body_filtered = searched === '' ?
+        body
+        :
+        body.filter(x => x.search.text === searched.text)
+
 
     return <>
         {
@@ -12,7 +17,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                 <div>
                     <Search
                         id={id}
-                        sendSearched={(data) => console.log(data)}
+                        sendSearched={(data) => setSearched(data)}
                         placeholder={'Search Players'}
                         list={body.map(b => {
                             return b.search
@@ -27,9 +32,9 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
             page ?
                 <div className="page_numbers_wrapper">
                     {
-                        (Math.ceil(body?.length / 25) <= 1) ? null :
+                        (Math.ceil(body_filtered?.length / 25) <= 1) ? null :
                             <ol className="page_numbers">
-                                {Array.from(Array(Math.ceil(body.length / 25)).keys()).map(page_number =>
+                                {Array.from(Array(Math.ceil(body_filtered.length / 25)).keys()).map(page_number =>
                                     <li className={page === page_number + 1 ? 'active click' : 'click'} key={page_number + 1} onClick={() => setPage(page_number + 1)}>
                                         {page_number + 1}
                                     </li>
@@ -86,7 +91,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
             }
             {
                 body?.length > 0 ?
-                    body
+                    body_filtered
                         ?.slice(Math.max(((page || 1) - 1) * 25, 0), (((page || 1) - 1) * 25) + 25)
                         ?.map((item, index) =>
                             <tbody key={index}
@@ -100,7 +105,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                                             <tbody>
                                                 <tr
                                                     className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
-                                                    onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
+                                                    onClick={setItemActive ? () => setItemActive(prevState => prevState.toString() === item.id.toString() ? '' : item.id) : null}
                                                 >
                                                     {
                                                         item.list
@@ -157,7 +162,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                     </tbody>
             }
             {
-                (((page - 1) * 25) + 25) < body?.length ?
+                (((page - 1) * 25) + 25) < body_filtered?.length ?
                     <tbody>
                         <tr
                             className={'click'}

@@ -1,11 +1,10 @@
 import TableMain from '../tableMain';
 import { useState } from "react";
-import { avatar } from '../functions/misc';
 
 const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
-
+    const [searched, setSearched] = useState('')
 
     const caption = (
         <div className="primary nav">
@@ -96,6 +95,8 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
             itemActive={itemActive}
             setItemActive={setItemActive}
             search={true}
+            searched={searched}
+            setSearched={setSearched}
         />
     </>
 }
