@@ -9,12 +9,16 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
     return <>
         {
             search ?
-                <Search
-                    id={id}
-                    sendSearched={(data) => setSearched(data)}
-                    placeholder={'Search Players'}
-                    list={body.map(b => b.search)}
-                />
+                <div>
+                    <Search
+                        id={id}
+                        sendSearched={(data) => console.log(data)}
+                        placeholder={'Search Players'}
+                        list={body.map(b => {
+                            return b.search
+                        })}
+                    />
+                </div>
                 :
                 null
         }

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { avatar } from './functions/misc';
 
 const Search = ({ id, sendSearched, placeholder, list }) => {
     const [searched, setSearched] = useState('')
+    const [playerFound, setPlayerFound] = useState('')
     const [dropdownVisible, setDropdownVisible] = useState(false)
     const [dropdownOptions, setDropdownOptions] = useState([])
 
@@ -9,20 +11,27 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
         handleSearch(searched)
     }, [searched])
 
+    useEffect(() => {
+        sendSearched(playerFound)
+    }, [playerFound])
+
     const handleSearch = (s) => {
         let options;
         let visible;
+
         if (s === '') {
             options = [];
             visible = false
-        } else if (list.includes(s)) {
+            setPlayerFound(s)
+        } else if (list.map(x => x.text).includes(s)) {
+            const option = list.find(x => x.text === s)
             options = []
             visible = false
-            sendSearched(s)
+            setPlayerFound(option)
         } else {
             const all_options = list
             options = all_options.filter(x =>
-                x.toLowerCase()
+                x.text.toLowerCase()
                     .replace("'", '')
                     .includes(s.toLowerCase()))
             visible = true
@@ -33,9 +42,15 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
 
     return <>
         <div
-
+            onBlur={() => setDropdownVisible(false)}
             className={'search_wrapper'}
         >
+            {
+                playerFound.image ?
+                    avatar(playerFound.image.src, playerFound.image.alt, playerFound.image.type)
+                    :
+                    null
+            }
             <input
                 className={'search'}
                 onChange={(e) => setSearched(e.target.value)}
@@ -44,13 +59,13 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
                 id={id === undefined ? null : id}
                 placeholder={placeholder}
                 type="text"
-                value={searched}
+                value={searched.text || searched}
                 autoComplete={'off'}
             />
             {
-                searched === '' ?
+                searched === '' || !dropdownVisible && (searched !== '' && dropdownVisible) ?
                     <button
-                        onClick={() => setDropdownOptions([])}
+                        onClick={() => setSearched(' ')}
                         className={'input click'}
                     >
                         &#9660;
@@ -65,20 +80,32 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
                     </button>
             }
             {
-                dropdownVisible ?
+                dropdownVisible && dropdownOptions.length > 0 ?
                     <ol
                         onBlur={() => setDropdownVisible(false)}
                         className="dropdown"
                     >
                         {dropdownOptions
-                            .sort((a, b) => a > b ? 1 : -1)
-                            .map(option =>
-                                <li key={option}>
+                            .sort((a, b) => a.text > b.text ? 1 : -1)
+                            .map((option, index) =>
+                                <li key={`${option.text}_${index}`}>
                                     <button
                                         className="click"
-                                        onMouseDown={() => setSearched(option)}
+                                        onMouseDown={() => setSearched(option.text)}
                                     >
-                                        {option}
+                                        {
+                                            option.image ?
+                                                <p>
+                                                    {
+                                                        avatar(
+                                                            option.image.src, option.image.alt, option.image.type
+                                                        )
+                                                    }
+                                                    {option.text}
+                                                </p>
+                                                :
+                                                option.text
+                                        }
                                     </button>
                                 </li>
                             )}

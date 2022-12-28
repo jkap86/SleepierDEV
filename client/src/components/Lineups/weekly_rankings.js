@@ -1,5 +1,6 @@
 import TableMain from '../tableMain';
 import { useState } from "react";
+import { avatar } from '../functions/misc';
 
 const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
     const [itemActive, setItemActive] = useState('');
@@ -48,7 +49,14 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
             const kickoff = new Date(parseInt(stateAllPlayers[player_id]?.gametime) * 1000)
             return {
                 id: player_id,
-                search: stateAllPlayers[player_id].full_name,
+                search: {
+                    text: stateAllPlayers[player_id].full_name,
+                    image: {
+                        src: player_id,
+                        alt: 'player photo',
+                        type: 'player'
+                    }
+                },
                 list: [
                     {
                         text: stateAllPlayers[player_id]?.full_name,
@@ -87,7 +95,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
             setPage={setPage}
             itemActive={itemActive}
             setItemActive={setItemActive}
-
+            search={true}
         />
     </>
 }
