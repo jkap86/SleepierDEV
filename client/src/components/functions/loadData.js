@@ -126,11 +126,22 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
         'WRRB_FLEX': ['RB', 'FB', 'WR'],
         'REC_FLEX': ['WR', 'TE']
     }
+    const position_abbrev = {
+        'QB': 'QB',
+        'RB': 'RB',
+        'WR': 'WR',
+        'TE': 'TE',
+        'SUPER_FLEX': 'SF',
+        'FLEX': 'WRT',
+        'WRRB_FLEX': 'W R',
+        'WRRB_WRT': 'W R',
+        'REC_FLEX': 'W T'
+    }
     const starting_slots = league.roster_positions.filter(x => Object.keys(position_map).includes(x))
 
-    let player_ranks = []
+    let players = []
     matchup?.players?.map(player_id => {
-        player_ranks.push({
+        players.push({
             id: player_id,
             rank: stateAllPlayers[player_id]?.rank_ecr || 999
         })
@@ -138,7 +149,7 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
 
     const getOptimalLineup = () => {
         let optimal_lineup = []
-        let player_ranks_filtered = player_ranks
+        let player_ranks_filtered = players
         starting_slots.map((slot, index) => {
             const slot_options = player_ranks_filtered
                 .filter(x => position_map[slot].includes(stateAllPlayers[x.id]?.position))
@@ -146,7 +157,10 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
 
             const optimal_player = slot_options[0]?.id
             player_ranks_filtered = player_ranks_filtered.filter(x => x.id !== optimal_player)
-            optimal_lineup.push(optimal_player)
+            optimal_lineup.push({
+                slot: position_abbrev[slot],
+                player: optimal_player
+            })
         })
 
         return optimal_lineup
@@ -158,11 +172,12 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
         let lineup_check = []
         starting_slots.map((slot, index) => {
             const cur_id = (matchup?.starters || [])[index]
-            const isInOptimal = optimal_lineup.includes(cur_id)
+            const isInOptimal = optimal_lineup.find(x => x.player === cur_id)
 
             return lineup_check.push({
                 index: index,
-                slot: slot,
+                slot: position_abbrev[slot],
+                slot_index: `${position_abbrev[slot]}_${index}`,
                 current_player: (matchup?.starters || [])[index] || '0',
                 notInOptimal: !isInOptimal,
                 earlyInFlex: false,
@@ -182,6 +197,7 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
     const lineup_check = matchup ? findSuboptimal() : []
 
     return {
+        players_points: matchup.players_points,
         starting_slots: starting_slots,
         optimal_lineup: optimal_lineup,
         lineup_check: lineup_check

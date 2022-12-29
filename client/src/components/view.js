@@ -198,7 +198,7 @@ const View = ({
 
     }, [state_user, stateLeagues, statePlayerShares, stateLeaguemates, stateMatchups, syncLeague, type1, type2])
 
-    console.log(stateMatchups)
+
 
     let display;
     switch (tab) {

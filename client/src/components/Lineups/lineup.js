@@ -3,11 +3,11 @@ import { useState } from "react";
 import tumbleweedgif from '../../images/tumbleweed.gif';
 import reload from '../../images/reload.png';
 
-const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_check, lineup_body, syncLeague }) => {
+const Lineup = ({ matchup, starting_slots, league, optimal_lineup, stateAllPlayers, state_user, lineup_check, syncLeague, players_points }) => {
     const [itemActive, setItemActive] = useState(null);
     const [syncing, setSyncing] = useState(false)
 
-    console.log(itemActive)
+    const active_player = lineup_check.find(x => `${x.slot}_${x.index}` === itemActive)?.current_player
 
     const handleSync = (league_id, user_id) => {
         setSyncing(true)
@@ -21,7 +21,7 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
         [
             {
                 text: 'Lineup',
-                colSpan: 19
+                colSpan: 23
             }
         ],
         [
@@ -40,15 +40,68 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
             {
                 text: 'Rank',
                 colSpan: 3
+            },
+            {
+                text: 'Points',
+                colSpan: 4
             }
         ]
     ]
+
+    const lineup_body = lineup_check.map((slot, index) => {
+        return {
+            id: slot.slot_index,
+            image: {
+                src: slot.current_player,
+                alt: 'player photo',
+                type: 'player'
+            },
+            list: !matchup ? [] : [
+                {
+                    text: lineup_check.find(x => x.current_player === slot.current_player)?.slot,
+                    colSpan: 3,
+                    className: optimal_lineup.find(x => x.player === slot.current_player) ? '' : 'red'
+                },
+                {
+                    text: stateAllPlayers[slot.current_player]?.full_name || 'Empty',
+                    colSpan: 10,
+                    className: optimal_lineup.find(x => x.player === slot.current_player) ? 'left' : 'left red',
+                    image: {
+                        src: slot.current_player,
+                        alt: stateAllPlayers[slot.current_player]?.full_name,
+                        type: 'player'
+                    }
+                },
+                {
+                    text: stateAllPlayers[slot.current_player]?.player_opponent
+                        .replace('at', '@')
+                        .replace('vs.', '')
+                        .replace(/\s/g, '')
+                        .trim()
+                        ||
+                        '-',
+                    colSpan: 3,
+                    className: optimal_lineup.find(x => x.player === slot.current_player) ? '' : 'red',
+                },
+                {
+                    text: stateAllPlayers[slot.current_player]?.rank_ecr || '-',
+                    colSpan: 3,
+                    className: optimal_lineup.find(x => x.player === slot.current_player) ? '' : 'red'
+                },
+                {
+                    text: players_points[slot.current_player]?.toLocaleString("en-US", { minimumFractionDigits: 2 }) || '-',
+                    colSpan: 4,
+                    className: optimal_lineup.find(x => x.player === slot.current_player) ? '' : 'red'
+                }
+            ]
+        }
+    })
 
     const subs_headers = [
         [
             {
                 text: itemActive ? 'Subs' : 'Optimal Lineup',
-                colSpan: 19
+                colSpan: 23
             }
         ],
         [
@@ -67,28 +120,32 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
             {
                 text: 'Rank',
                 colSpan: 3
+            },
+            {
+                text: 'Points',
+                colSpan: 4
             }
         ]
     ]
 
     const subs_body = itemActive ?
-        lineup_check.find(x => `${x.slot}_${x.index}` === itemActive)?.slot_options
+        lineup_check.find(x => x.slot_index === itemActive)?.slot_options
             ?.sort((a, b) => stateAllPlayers[a]?.rank_ecr - stateAllPlayers[b]?.rank_ecr)
             ?.map((so, index) => {
+                const color = optimal_lineup.find(x => x.player === so) ? 'green' :
+                    stateAllPlayers[so]?.rank_ecr < stateAllPlayers[active_player]?.rank_ecr ? 'yellow' : ''
                 return {
                     id: so,
                     list: [
                         {
                             text: 'BN',
                             colSpan: 3,
-                            className: optimal_lineup.includes(so) ? 'green' :
-                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'red' : ''
+                            className: color
                         },
                         {
                             text: stateAllPlayers[so]?.full_name,
                             colSpan: 10,
-                            className: optimal_lineup.includes(so) ? 'left green' :
-                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'left red' : 'left',
+                            className: color + " left",
                             image: {
                                 src: so,
                                 alt: stateAllPlayers[so]?.full_name,
@@ -100,16 +157,20 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
                                 .replace('at', '@')
                                 .replace('vs.', '')
                                 .replace(/\s/g, '')
-                                .trim(),
+                                .trim()
+                                || '-',
                             colSpan: 3,
-                            className: optimal_lineup.includes(so) ? 'green' :
-                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'red' : ''
+                            className: color
                         },
                         {
                             text: stateAllPlayers[so]?.rank_ecr,
                             colSpan: 3,
-                            className: optimal_lineup.includes(so) ? 'green' :
-                                stateAllPlayers[so]?.rank_ecr >= stateAllPlayers[itemActive]?.rank_ecr ? 'red' : ''
+                            className: color
+                        },
+                        {
+                            text: players_points[so].toLocaleString("en-US", { minimumFractionDigits: 2 }),
+                            colSpan: 4,
+                            className: color
                         }
                     ]
                 }
@@ -117,29 +178,25 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
         :
         optimal_lineup.map((ol, index) => {
             return {
-                id: ol,
+                id: ol.player,
                 list: [
                     {
-                        text: league.roster_positions[index]
-                            .replace('SUPER_FLEX', 'SF')
-                            .replace('FLEX', 'WRT')
-                            .replace('WRRB_FLEX', 'W R')
-                            .replace('REC_FLEX', 'W T'),
+                        text: ol.slot,
                         colSpan: 3,
                         className: 'green'
                     },
                     {
-                        text: stateAllPlayers[ol]?.full_name,
+                        text: stateAllPlayers[ol.player]?.full_name,
                         colSpan: 10,
                         className: 'left green',
                         image: {
-                            src: ol,
-                            alt: stateAllPlayers[ol]?.full_name,
+                            src: ol.player,
+                            alt: stateAllPlayers[ol.player]?.full_name,
                             type: 'player'
                         }
                     },
                     {
-                        text: stateAllPlayers[ol]?.player_opponent
+                        text: stateAllPlayers[ol.player]?.player_opponent
                             .replace('at', '@')
                             .replace('vs.', '')
                             .replace(/\s/g, '')
@@ -148,8 +205,13 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
                         className: 'green'
                     },
                     {
-                        text: stateAllPlayers[ol]?.rank_ecr,
+                        text: stateAllPlayers[ol.player]?.rank_ecr,
                         colSpan: 3,
+                        className: 'green'
+                    },
+                    {
+                        text: players_points[ol.player].toLocaleString("en-US", { minimumFractionDigits: 2 }),
+                        colSpan: 4,
                         className: 'green'
                     }
                 ]
@@ -158,12 +220,33 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
 
     return <>
         <div className="secondary nav">
+            <p>
+                {
+                    (starting_slots || [])
+                        .map((slot, index) => {
+                            const starter = matchup?.starters ? matchup.starters[index] : 'Empty'
+                            return players_points[starter] || 0
+                        })
+                        .reduce((acc, cur) => acc + cur, 0)
+                        .toLocaleString("en-US", { minimumFractionDigits: 2 })
+                }
+            </p>
             <button
                 className={`sync ${syncing ? '' : 'click'}`}
                 onClick={syncing ? null : () => handleSync(league.league_id, state_user.user_id)}
             >
                 <i className={`fa-solid fa-arrows-rotate ${syncing ? 'rotate' : ''}`}></i>
             </button>
+            <p>
+                {
+                    (itemActive ? lineup_check.find(x => `${x.slot}_${x.index}` === itemActive)?.slot_options : optimal_lineup.map(x => x.player))
+                        .map((player, index) => {
+                            return players_points[player] || 0
+                        })
+                        .reduce((acc, cur) => acc + cur, 0)
+                        .toLocaleString("en-US", { minimumFractionDigits: 2 })
+                }
+            </p>
         </div>
         {lineup_body?.length > 0 ?
             <>
@@ -172,7 +255,7 @@ const Lineup = ({ league, optimal_lineup, stateAllPlayers, state_user, lineup_ch
                     headers={lineup_headers}
                     body={lineup_body}
                     itemActive={itemActive}
-                    setItemActive={setItemActive}
+                    setItemActive={(setItemActive)}
                 />
 
                 <TableMain

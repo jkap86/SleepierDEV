@@ -3,7 +3,7 @@ import { avatar } from './functions/misc';
 import tumbleweedgif from '../images/tumbleweed.gif';
 import Search from './search';
 
-const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search, searched, setSearched }) => {
+const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search, searched, setSearched, options }) => {
 
     const body_filtered = searched === '' || !searched ?
         body
@@ -31,16 +31,25 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
 
             page ?
                 <div className="page_numbers_wrapper">
-                    {
-                        (Math.ceil(body_filtered?.length / 25) <= 1) ? null :
-                            <ol className="page_numbers">
-                                {Array.from(Array(Math.ceil(body_filtered.length / 25)).keys()).map(page_number =>
-                                    <li className={page === page_number + 1 ? 'active click' : 'click'} key={page_number + 1} onClick={() => setPage(page_number + 1)}>
-                                        {page_number + 1}
-                                    </li>
-                                )}
-                            </ol>
-                    }
+                    <>
+                        {
+                            (Math.ceil(body_filtered?.length / 25) <= 1) ? null :
+                                <ol className="page_numbers">
+                                    {Array.from(Array(Math.ceil(body_filtered.length / 25)).keys()).map(page_number =>
+                                        <li className={page === page_number + 1 ? 'active click' : 'click'} key={page_number + 1} onClick={() => setPage(page_number + 1)}>
+                                            {page_number + 1}
+                                        </li>
+                                    )}
+                                </ol>
+                        }
+                        {
+                            options ?
+                                <div className='options'>
+                                    {options[0]}
+                                </div>
+                                : null
+                        }
+                    </>
                 </div>
                 : null
         }

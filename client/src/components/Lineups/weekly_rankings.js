@@ -1,10 +1,18 @@
 import TableMain from '../tableMain';
 import { useState } from "react";
+import { importRankings } from '../functions/filterData';
 
 const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
     const [searched, setSearched] = useState('')
+    const [uploadedRankings, setUploadedRankings] = useState(null)
+
+    /*
+    console.log({
+        uploadedRankings: uploadedRankings
+    })
+    */
 
     const caption = (
         <div className="primary nav">
@@ -83,6 +91,13 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
             }
         })
 
+    const options = [
+        <input
+            type={'file'}
+            onChange={(e) => importRankings(e, stateAllPlayers, setUploadedRankings)}
+        />
+    ]
+
     return <>
         {caption}
         <TableMain
@@ -97,6 +112,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
             search={true}
             searched={searched}
             setSearched={setSearched}
+        //  options={options}
         />
     </>
 }

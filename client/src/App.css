@@ -57,6 +57,8 @@ img.thumbnail {
   margin: .25rem;
 }
 
+
+
 p {
   margin: 0;
 }
@@ -80,7 +82,7 @@ p {
   margin-right: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: .25rem;
+  padding: 0;
   width: 90%;
 }
 
@@ -88,7 +90,7 @@ p {
   overflow: visible;
   width: fit-content;
   min-width: 90%;
-  padding: .25rem;
+  padding-right: 1.5rem;
   position: relative;
   z-index: 2;
   background-color: black;
@@ -203,7 +205,8 @@ a.home {
 
 div.heading img {
   width: 7.5rem;
-  margin: 2rem auto;
+  height: 7.5rem;
+  margin: auto;
 }
 
 div.navbar,
@@ -374,13 +377,19 @@ div.page_numbers_wrapper {
   background-color: var(--color5);
   z-index: 15;
   height: 4rem;
+  display: flex;
+}
+
+div.options {
+  position: absolute;
+  width: 10%;
 }
 
 ol.page_numbers {
   display: flex;
   justify-content: left;
   width: fit-content;
-  max-width: 80vw;
+  max-width: 80%;
   list-style: none;
   font-size: 1.5rem;
   margin: 0 auto;
@@ -455,6 +464,18 @@ table.secondary.subs {
   top: 11rem;
 }
 
+table.secondary.lineup img.thumbnail,
+table.secondary.subs img.thumbnail {
+  height: 2rem;
+  width: 2rem;
+}
+
+table.secondary.lineup td,
+table.secondary.subs td {
+  padding: 0;
+  height: 3rem;
+}
+
 tr.secondary.active {
   background-color: var(--color3);
   position: sticky;
@@ -499,6 +520,11 @@ i.fa-regular.fa-rectangle-list {
   transform: translate(-100%);
 }
 
+div.nav>p {
+  margin: auto;
+  width: 100%;
+}
+
 div.nav>button {
   color: white;
   opacity: .5;
@@ -523,7 +549,7 @@ div.secondary.nav>button.sync {
   background-color: var(--color2);
   color: var(--color1);
   font-weight: 900;
-  margin: auto;
+  margin: auto 1rem;
   align-self: flex-end;
 }
 

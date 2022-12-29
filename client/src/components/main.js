@@ -72,7 +72,10 @@ const Main = () => {
                 setStatePlayerShares(data.players)
                 setStateLeaguemates(data.leaguemates)
                 setStateMatchups(data.matchups)
-
+                console.log({
+                    ...data,
+                    allplayers: allplayers.data
+                })
 
             } else {
                 setState_User('Invalid')

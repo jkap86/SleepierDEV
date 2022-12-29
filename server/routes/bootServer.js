@@ -4,6 +4,7 @@ const { getPlayersDict } = require('../routes/playersDict');
 
 const bootServer = async (app, axios, db) => {
     let state;
+
     try {
         state = await axios.get('https://api.sleeper.app/v1/state/nfl')
     } catch (error) {
