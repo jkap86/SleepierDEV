@@ -173,6 +173,44 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
         starting_slots.map((slot, index) => {
             const cur_id = (matchup?.starters || [])[index]
             const isInOptimal = optimal_lineup.find(x => x.player === cur_id)
+            const gametime = new Date((stateAllPlayers[cur_id]?.gametime) * 1000)
+            const day = gametime.getDay() <= 2 ? gametime.getDay() + 7 : gametime.getDay()
+            const hour = gametime.getHours()
+            const timeslot = parseFloat(day + '.' + hour)
+            const slot_options = matchup?.players
+                .filter(x =>
+                    !(matchup.starters || []).includes(x) &&
+                    position_map[slot].includes(stateAllPlayers[x]?.position)
+                )
+                || []
+            const earlyInFlex = timeslot < 7 && matchup.starters?.find((x, starter_index) => {
+                const alt_gametime = new Date(stateAllPlayers[x]?.gametime * 1000)
+                const alt_day = alt_gametime.getDay() <= 2 ? alt_gametime.getDay() + 7 : alt_gametime.getDay()
+                const alt_hour = alt_gametime.getHours()
+                const alt_timeslot = parseFloat(alt_day + '.' + alt_hour)
+
+                return (
+
+                    alt_timeslot > timeslot
+                    && position_map[slot].includes(stateAllPlayers[x]?.position)
+                    && position_map[starting_slots[starter_index]].includes(stateAllPlayers[cur_id]?.position)
+                    && position_map[league.roster_positions[starter_index]].length < position_map[slot].length
+                )
+            })
+
+            const lateNotInFlex = timeslot > 7.17 && matchup.starters?.find((x, starter_index) => {
+                const alt_gametime = new Date(stateAllPlayers[x]?.gametime * 1000)
+                const alt_day = alt_gametime.getDay() <= 2 ? alt_gametime.getDay() + 7 : alt_gametime.getDay()
+                const alt_hour = alt_gametime.getHours()
+                const alt_timeslot = parseFloat(alt_day + '.' + alt_hour)
+
+                return (
+                    alt_timeslot < timeslot
+                    && position_map[slot].includes(stateAllPlayers[x]?.position)
+                    && position_map[starting_slots[starter_index]].includes(stateAllPlayers[cur_id]?.position)
+                    && position_map[league.roster_positions[starter_index]].length > position_map[slot].length
+                )
+            })
 
             return lineup_check.push({
                 index: index,
@@ -180,15 +218,10 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
                 slot_index: `${position_abbrev[slot]}_${index}`,
                 current_player: (matchup?.starters || [])[index] || '0',
                 notInOptimal: !isInOptimal,
-                earlyInFlex: false,
-                lateNotInFlex: false,
+                earlyInFlex: earlyInFlex,
+                lateNotInFlex: lateNotInFlex,
                 nonQBinSF: position_map[slot].includes('QB') && stateAllPlayers[(matchup?.starters || [])[index]]?.position !== 'QB',
-                slot_options: matchup?.players
-                    .filter(x =>
-                        !(matchup.starters || []).includes(x) &&
-                        position_map[slot].includes(stateAllPlayers[x]?.position)
-                    )
-                    || []
+                slot_options: slot_options
             })
         })
         return lineup_check
