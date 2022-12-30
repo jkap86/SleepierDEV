@@ -520,9 +520,33 @@ i.fa-regular.fa-rectangle-list {
   transform: translate(-100%);
 }
 
-div.nav>p {
+div.nav>div {
   margin: auto;
-  width: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+div.nav>div>button {
+  width: fit-content;
+  height: 2.5rem;
+  background-color: transparent;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  border: .1rem solid transparent;
+}
+
+div.nav>div>button.inactive {
+  visibility: hidden;
+}
+
+div.nav>div>button.active {
+  border: .1rem solid var(--color2);
+  filter: brightness(2);
+  background-color: black;
+  color: var(--color2);
 }
 
 div.nav>button {
@@ -544,13 +568,17 @@ div.nav>button.active {
 
 div.secondary.nav>button.sync {
   padding: .25rem;
-  height: 75%;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 3rem;
+  border: .25rem dashed var(--color3);
   opacity: 1;
   background-color: var(--color2);
-  color: var(--color1);
+  color: var(--color3);
   font-weight: 900;
   margin: auto 1rem;
   align-self: flex-end;
+  filter: contrast(2) brightness(2);
 }
 
 div.search_wrapper {

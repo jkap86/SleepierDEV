@@ -47,12 +47,28 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
     const lineups_body = stateMatchups.map(matchup_league => {
         const matchup = matchup_league[`matchups_${stateState.week}`]?.find(x => x.roster_id === matchup_league.league.userRoster.roster_id)
 
-        const opponent = matchup_league[`matchups_${stateState.week}`]?.find(x => x.matchup_id)
+        const opponentMatchup = matchup.matchup_id ? matchup_league[`matchups_${stateState.week}`]?.find(x => x.matchup_id === matchup.matchup_id && x.roster_id !== matchup?.roster_id) : null
+        let opponent;
+        if (opponentMatchup) {
+            const opponentRoster = matchup_league.league.rosters.find(r => r?.roster_id === opponentMatchup?.roster_id)
+            const opponentInfo = matchup_league.league.users.find(u => u.user_id === opponentRoster?.owner_id)
+            opponent = {
+                user: opponentInfo,
+                roster: opponentRoster,
+                matchup: opponentMatchup
+            }
+        }
+
+        console.log({
+            league: matchup_league.league,
+            matchup: matchup,
+            opponent: opponent
+        })
         let lineups = matchup ? getLineupCheck(matchup, matchup_league.league, stateAllPlayers) : null
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
         const starting_slots = lineups?.starting_slots
-        const players_points = lineups?.players_points
+        const players_points = { ...lineups?.players_points, ...opponentMatchup?.players_points }
 
 
 
@@ -113,6 +129,7 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
             secondary_table: (
                 <Lineup
                     matchup={matchup}
+                    opponent={opponent}
                     starting_slots={starting_slots}
                     league={matchup_league.league}
                     optimal_lineup={optimal_lineup}
