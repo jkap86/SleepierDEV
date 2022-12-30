@@ -46,6 +46,8 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
 
     const lineups_body = stateMatchups.map(matchup_league => {
         const matchup = matchup_league[`matchups_${stateState.week}`]?.find(x => x.roster_id === matchup_league.league.userRoster.roster_id)
+
+        const opponent = matchup_league[`matchups_${stateState.week}`]?.find(x => x.matchup_id)
         let lineups = matchup ? getLineupCheck(matchup, matchup_league.league, stateAllPlayers) : null
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
@@ -76,35 +78,35 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
                     }
                 },
                 {
-                    text: !lineup_check ? '-' : lineup_check.filter(x => x.notInOptimal).length > 0 ?
+                    text: !matchup.matchup_id ? '-' : lineup_check.filter(x => x.notInOptimal).length > 0 ?
                         lineup_check.filter(x => x.notInOptimal).length :
                         '√',
                     colSpan: 2,
-                    className: !lineup_check ? '' : lineup_check.filter(x => x.notInOptimal).length > 0 ?
+                    className: !matchup.matchup_id ? '' : lineup_check.filter(x => x.notInOptimal).length > 0 ?
                         'red' : 'green'
                 },
                 {
-                    text: !lineup_check ? '-' : lineup_check.filter(x => x.earlyInFlex).length > 0 ?
+                    text: !matchup.matchup_id ? '-' : lineup_check.filter(x => x.earlyInFlex).length > 0 ?
                         lineup_check.filter(x => x.earlyInFlex).length :
                         '√',
                     colSpan: 2,
-                    className: !lineup_check ? '' : lineup_check.filter(x => x.earlyInFlex).length > 0 ?
+                    className: !matchup.matchup_id ? '' : lineup_check.filter(x => x.earlyInFlex).length > 0 ?
                         'red' : 'green'
                 },
                 {
-                    text: !lineup_check ? '-' : lineup_check.filter(x => x.lateNotInFlex).length > 0 ?
+                    text: !matchup.matchup_id ? '-' : lineup_check.filter(x => x.lateNotInFlex).length > 0 ?
                         lineup_check.filter(x => x.lateNotInFlex).length :
                         '√',
                     colSpan: 2,
-                    className: !lineup_check ? '' : lineup_check.filter(x => x.lateNotInFlex).length > 0 ?
+                    className: !matchup.matchup_id ? '' : lineup_check.filter(x => x.lateNotInFlex).length > 0 ?
                         'red' : 'green'
                 },
                 {
-                    text: !lineup_check ? '-' : lineup_check.filter(x => x.nonQBinSF).length > 0 ?
+                    text: !matchup.matchup_id ? '-' : lineup_check.filter(x => x.nonQBinSF).length > 0 ?
                         lineup_check.filter(x => x.nonQBinSF).length :
                         '√',
                     colSpan: 2,
-                    className: !lineup_check ? '' : lineup_check.filter(x => x.nonQBinSF).length > 0 ?
+                    className: !matchup.matchup_id ? '' : lineup_check.filter(x => x.nonQBinSF).length > 0 ?
                         'red' : 'green'
                 }
             ],
