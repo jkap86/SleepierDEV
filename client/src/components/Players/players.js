@@ -88,7 +88,7 @@ const Players = ({
                         }
                     },
                     {
-                        text: player.leagues_owned.length,
+                        text: player.leagues_owned.length.toString(),
                         colSpan: 1,
                         className: 'green'
                     },
@@ -98,7 +98,7 @@ const Players = ({
                         className: 'green'
                     },
                     {
-                        text: player.leagues_taken.length,
+                        text: player.leagues_taken.length.toString(),
                         colSpan: 1,
                         className: 'red'
                     },

@@ -24,6 +24,7 @@ const View = ({
     const [tab, setTab] = useState('Lineups');
     const [type1, setType1] = useState('All');
     const [type2, setType2] = useState('All');
+    const [lineupsTab, setLineupsTab] = useState('Weekly Rankings');
 
     useEffect(() => {
         const fetchFiltered = () => {
@@ -210,6 +211,8 @@ const View = ({
                 state_user={state_user}
                 stateMatchups={stateMatchupsFiltered}
                 syncLeague={syncLeague}
+                tab={lineupsTab}
+                setTab={setLineupsTab}
             />
             break;
         case 'Leagues':

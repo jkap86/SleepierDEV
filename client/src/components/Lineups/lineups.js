@@ -7,9 +7,11 @@ const Lineups = ({
     stateAllPlayers,
     state_user,
     stateMatchups,
-    syncLeague
+    syncLeague,
+    tab,
+    setTab
 }) => {
-    const [tab, setTab] = useState('Weekly Rankings');
+
 
     const display = tab === 'Lineup Check' ?
         <Lineup_Check
