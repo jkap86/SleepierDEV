@@ -1,5 +1,6 @@
 import TableMain from "../tableMain";
 import { useState } from "react";
+import LeaguemateLeagues from './leaguemateLeagues'
 
 const Leaguemates = ({
     stateAllPlayers,
@@ -87,8 +88,8 @@ const Leaguemates = ({
                             "-" +
                             lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.losses, 0) +
                             (
-                                lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.ties, 0) > 0 ?
-                                    `${lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings?.ties, 0)}` :
+                                lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings.ties, 0) > 0 ?
+                                    `-${lm.leagues.reduce((acc, cur) => acc + cur.lmRoster.settings.ties, 0)}` :
                                     ''
                             )
                         ),
@@ -135,7 +136,13 @@ const Leaguemates = ({
                         colSpan: 2,
                         className: "green"
                     }
-                ]
+                ],
+                secondary_table: (
+                    <LeaguemateLeagues
+                        state_user={state_user}
+                        leaguemate={lm}
+                    />
+                )
             }
         })
 

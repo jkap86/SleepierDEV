@@ -54,7 +54,7 @@ export const getLeagueData = (leagues, user_id, week) => {
                 x.owner_id === user.user_id ||
                 x.co_owners?.includes(user.user_id)
             )
-            if (lmRoster) {
+            if (lmRoster?.players) {
                 leaguemates_all.push({
                     ...user,
                     league: {

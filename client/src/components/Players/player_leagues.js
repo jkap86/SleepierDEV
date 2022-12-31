@@ -2,7 +2,6 @@ import TableMain from "../tableMain";
 import { useState } from "react";
 
 const PlayerLeagues = ({ leagues_owned, leagues_taken, leagues_available }) => {
-    const [itemActive, setItemActive] = useState(null);
     const [tab, setTab] = useState('Owned');
 
     const player_leagues_headers = [

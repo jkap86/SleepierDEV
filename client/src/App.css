@@ -266,7 +266,7 @@ div.switch {
   background-color: black;
   border-radius: 2rem;
   filter: drop-shadow(0 0 .5rem white) brightness(2);
-  height: 3rem;
+  height: fit-content;
 }
 
 div.navbar {
