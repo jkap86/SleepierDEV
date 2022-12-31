@@ -4,7 +4,8 @@ import { avatar } from './functions/misc';
 import Leagues from "./Leagues/leagues";
 import Players from "./Players/players";
 import Leaguemates from "./Leaguemates/leaguemates";
-import Lineups from "./Lineups/lineups";
+import Lineups from "./Lineups/lineups"
+import sleeperlogo from '../images/sleeper_icon.png'
 
 const View = ({
     stateAllPlayers,
@@ -244,7 +245,24 @@ const View = ({
         </Link>
         {
             state_user === 'Invalid' ? <h1 className="error">USERNAME NOT FOUND</h1> :
-                !state_user ? <h1>Loading...</h1> :
+                !state_user ?
+                    <div className="loading">
+                        <img
+                            className="loading"
+                            src={sleeperlogo}
+                            alt={'logo'}
+                        />
+                        <div className='z_one'>
+                            Z
+                        </div>
+                        <div className='z_two'>
+                            Z
+                        </div>
+                        <div className='z_three'>
+                            Z
+                        </div>
+                    </div>
+                    :
                     <>
                         <div className="heading">
                             <h1>

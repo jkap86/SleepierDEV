@@ -21,7 +21,7 @@ const Lineup = ({ matchup, opponent, starting_slots, league, optimal_lineup, sta
         syncLeague(league_id, user_id)
         setTimeout(() => {
             setSyncing(false)
-        }, 5000)
+        }, 1000)
     }
 
     const lineup_headers = [
@@ -317,7 +317,7 @@ const Lineup = ({ matchup, opponent, starting_slots, league, optimal_lineup, sta
                 </button>
             </div>
             <button
-                className={`sync ${syncing ? '' : 'click'}`}
+                className={`sync ${syncing ? 'rotate' : 'click'}`}
                 onClick={syncing ? null : () => handleSync(league.league_id, state_user.user_id)}
             >
                 <i className={`fa-solid fa-arrows-rotate ${syncing ? 'rotate' : ''}`}></i>
