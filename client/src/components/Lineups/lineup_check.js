@@ -1,5 +1,5 @@
 import TableMain from '../tableMain';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getLineupCheck } from '../functions/loadData';
 import Lineup from "./lineup";
 
@@ -7,6 +7,10 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
     const [searched, setSearched] = useState('')
+
+    useEffect(() => {
+        setPage(1)
+    }, [searched])
 
     const lineups_headers = [
         [

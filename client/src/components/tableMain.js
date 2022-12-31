@@ -86,7 +86,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                 }
             </thead>
             {
-                page > 1 ?
+                !(page > 1) ? null :
                     <tbody>
                         <tr
                             className={'click'}
@@ -95,8 +95,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                             <td colSpan={headers[0].reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}>PREV PAGE</td>
                         </tr>
                     </tbody>
-                    :
-                    null
+
             }
             {
                 body?.length > 0 ?
@@ -184,6 +183,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                     null
             }
         </table>
+        <br /><br /><br /><br /><br /><br /><br />
     </>
 }
 

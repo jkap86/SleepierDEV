@@ -14,8 +14,8 @@ html {
 }
 
 .App {
-  height: 98vh;
-  width: 98vw;
+  height: 100vh;
+  width: 100vw;
   background: var(--color5);
   border: none;
   padding: none;
@@ -355,12 +355,10 @@ table {
 }
 
 table.main {
-  width: 95vw;
   background-color: var(--color1);
   font-size: 1.5rem;
   box-shadow: 0 0 2rem white;
   white-space: nowrap;
-  margin: auto;
   position: relative;
 }
 
@@ -382,7 +380,7 @@ tr.main.active {
 table.main_body {
   table-layout: fixed;
   margin: auto;
-  width: 95vw;
+
   border-spacing: .05rem;
 }
 
@@ -708,6 +706,10 @@ ol.dropdown>li>button {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+ol.dropdown>li>button>p {
+  margin: .25rem 0rem;
 }
 
 ol.dropdown>li>button:hover {
