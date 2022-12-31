@@ -141,6 +141,7 @@ const Leaguemates = ({
 
     return <>
         <TableMain
+            id={'Leaguemates'}
             type={'main'}
             headers={leaguemates_headers}
             body={leaguemates_body}

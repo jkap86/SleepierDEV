@@ -165,6 +165,7 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
     return <>
         {caption}
         <TableMain
+            id={'Lineups'}
             type={'main'}
             headers={lineups_headers}
             body={lineups_body}

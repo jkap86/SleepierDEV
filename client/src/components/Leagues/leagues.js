@@ -85,6 +85,7 @@ const Leagues = ({
 
     return <>
         <TableMain
+            id={'Leagues'}
             type={'main'}
             headers={leagues_headers}
             body={leagues_body}

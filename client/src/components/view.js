@@ -314,6 +314,7 @@ const View = ({
                             </div>
                         </div>
                         {display}
+                        <br /><br /><br /><br /><br /><br /><br />
                     </>
         }
 

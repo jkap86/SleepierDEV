@@ -18,7 +18,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                     <Search
                         id={id}
                         sendSearched={(data) => setSearched(data)}
-                        placeholder={'Search Players'}
+                        placeholder={`Search ${id}`}
                         list={body.map(b => {
                             return b.search
                         })}
@@ -183,7 +183,6 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                     null
             }
         </table>
-        <br /><br /><br /><br /><br /><br /><br />
     </>
 }
 

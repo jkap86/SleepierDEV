@@ -130,6 +130,7 @@ const Players = ({
 
     return <>
         <TableMain
+            id={'Players'}
             type={'main'}
             headers={playerShares_headers}
             body={playerShares_body}

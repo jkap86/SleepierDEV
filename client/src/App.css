@@ -14,11 +14,12 @@ html {
 }
 
 .App {
-  height: 100vh;
-  width: 100vw;
+  height: 95vh;
+  width: 95vw;
   background: var(--color5);
   border: none;
   padding: none;
+  margin: auto;
 }
 
 ol li {
@@ -265,12 +266,12 @@ div.switch {
   background-color: black;
   border-radius: 2rem;
   filter: drop-shadow(0 0 .5rem white) brightness(2);
+  height: 3rem;
 }
 
 div.navbar {
-  width: fit-content;
-  min-width: 75%;
-  max-width: 100%;
+  width: 50rem;
+
 }
 
 div.switch_wrapper {
@@ -292,9 +293,10 @@ button.sw {
   color: var(--color4);
   border: none;
   padding: .5rem;
-  font-weight: 900;
+  opacity: .5;
   border: .25rem solid transparent;
-  font-family: 'BitDotted', sans-serif;
+  font-family: 'GROUPE', sans-serif;
+
 }
 
 button.nav {
@@ -361,7 +363,7 @@ table.main {
   box-shadow: 0 0 2rem white;
   white-space: nowrap;
   position: relative;
-  width: 95%;
+  width: 100%;
 }
 
 table.main>thead {
@@ -370,6 +372,10 @@ table.main>thead {
   top: 0rem;
   background-color: inherit;
   z-index: 14;
+}
+
+tr.main2.active {
+  border: .25rem ridge var(--color2);
 }
 
 tr.main.active {
@@ -478,6 +484,7 @@ table.secondary {
   width: 100%;
   display: inline-table;
   vertical-align: top;
+
 }
 
 table.secondary tr.active td {
@@ -503,6 +510,7 @@ table.secondary.subs {
   border: .25rem ridge var(--color2);
   position: sticky;
   top: 7rem;
+  display: inline-table;
 }
 
 table.secondary.lineup img.thumbnail,

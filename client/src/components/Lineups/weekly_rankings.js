@@ -101,7 +101,7 @@ const WeeklyRankings = ({ stateState, stateAllPlayers, setTab }) => {
     return <>
         {caption}
         <TableMain
-            id={'Weekly Rankings'}
+            id={'Rankings'}
             type={'main'}
             headers={weekly_rankings_headers}
             body={weekly_rankings_body}
