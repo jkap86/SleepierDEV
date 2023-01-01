@@ -3,6 +3,10 @@ import axios from 'axios';
 
 const Shark = ({ }) => {
     const [sharkleagues, setSharkLeagues] = useState([])
+    const [stateAllPlayers, setStateAllPlayers] = useState({})
+    const [active, setActive] = useState('')
+
+
     const leagues = [
         {
             league_id: '786430856779681792',
@@ -38,6 +42,8 @@ const Shark = ({ }) => {
     ]
     useEffect(() => {
         const fetchData = async () => {
+            const stateAllPlayers = await axios.get('/allplayers')
+            setStateAllPlayers(stateAllPlayers.data)
             const matchups = await Promise.all(leagues.map(async league => {
                 const matchup = await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/matchups/17`)
                 return {
@@ -54,21 +60,45 @@ const Shark = ({ }) => {
     return <>
         Shark Watch
 
-        <table>
-            <tbody>
-                {
-                    sharkleagues.map((user =>
-                        <tr key={user.username}>
-                            <td>
+        <table className="main">
+            {
+                sharkleagues.map((user =>
+                    <tbody>
+                        <tr
+                            className={active === user.username ? 'active' : ''}
+                            onClick={() => setActive(prevState => prevState === user.username ? '' : user.username)}
+                            key={user.username}>
+                            <td className="left">
                                 {user.username}
                             </td>
                             <td>
                                 {(user.starters.reduce((acc, cur) => acc + user.players_points[cur], 0)).toFixed(2)}
                             </td>
                         </tr>
-                    ))
-                }
-            </tbody>
+                        {
+                            active === user.username ?
+                                <tr>
+                                    <td colSpan={2}>
+                                        <table className="secondary">
+                                            <tbody>
+                                                {
+                                                    user.starters.map(starter =>
+                                                        <tr>
+                                                            <td>{stateAllPlayers[starter]?.full_name}</td>
+                                                            <td>{user.players_points[starter]}</td>
+                                                        </tr>
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                : null
+                        }
+                    </tbody>
+                ))
+            }
         </table>
     </>
 }
