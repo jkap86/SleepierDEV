@@ -34,12 +34,20 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
         await Promise.all(leagues_to_update
             .slice(i, Math.min(i + increment, leagues_to_update.length + 1))
             .map(async league_to_update => {
-                const [league, users, rosters, matchups] = await Promise.all([
+                const [league, users, rosters] = await Promise.all([
                     await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}`),
                     await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}/users`),
                     await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}/rosters`),
-                    await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}/matchups/${week}`)
                 ])
+                let matchups;
+                try {
+                    matchups = await axios.get(`https://api.sleeper.app/v1/league/${league_to_update.league_id}/matchups/${week}`)
+                } catch (error) {
+                    console.log(error)
+                    matchups = {
+                        data: []
+                    }
+                }
 
                 const new_league = {
                     league_id: league_to_update.league_id,
