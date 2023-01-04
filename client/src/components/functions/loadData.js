@@ -237,25 +237,3 @@ export const getLineupCheck = (matchup, league, stateAllPlayers) => {
     }
 }
 
-
-
-/*
-        return lineup_check.push({
-            index: index,
-            slot: slot,
-            current_player: matchup.starters[index],
-            notInOptimal: !optimalLineup.find(x => x.player === matchup.starters[index]),
-            earlyInFlex: gametime.getDay() > 1 && gametime.getDay() < 7 &&
-                position_map[slot].length > 1,
-            lateNotInFlex: (gametime.getDay() >= 0 && gametime.getDay() < 3 || gametime.getDay() === 0 && gametime.getHours() > 17) &&
-                position_map[slot].length === 1,
-            nonQBinSF: position_map[slot].includes('QB') && stateAllPlayers[matchup.starters[index]]?.position !== 'QB',
-            slot_options: slot_options,
-        })
-
-        return {
-        optimal_lineup: optimalLineup,
-        lineup_check: lineup_check
-    }
-
-*/

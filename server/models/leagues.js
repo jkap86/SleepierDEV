@@ -19,6 +19,9 @@ const leagues = (db, season) => {
         type: {
             type: Sequelize.INTEGER
         },
+        settings: {
+            type: Sequelize.JSONB
+        },
         scoring_settings: {
             type: Sequelize.JSONB
         },

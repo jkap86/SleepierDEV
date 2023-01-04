@@ -19,45 +19,55 @@ const Players = ({
             {
                 text: 'Player',
                 colSpan: 4,
-                rowSpan: 2
+                rowSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Owned',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Taken',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Available',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Total',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             },
             {
                 text: '%',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             },
             {
                 text: 'Total',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             },
             {
                 text: '%',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             },
             {
                 text: 'Total',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             },
             {
                 text: '%',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             }
         ]
     ]

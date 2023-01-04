@@ -47,6 +47,7 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
                     avatar: league.data.avatar,
                     best_ball: league.data.settings.best_ball,
                     type: league.data.settings.type,
+                    settings: league.data.settings,
                     scoring_settings: league.data.scoring_settings,
                     roster_positions: league.data.roster_positions,
                     users: users.data,
@@ -60,7 +61,7 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
     }
 
     await leagues_table.bulkCreate(new_leagues, {
-        updateOnDuplicate: ["name", "avatar", "best_ball", "type", "scoring_settings", "roster_positions",
+        updateOnDuplicate: ["name", "avatar", "best_ball", "type", "settings", "scoring_settings", "roster_positions",
             "users", "rosters", `matchups_${week}`, "updatedAt"]
     })
 
@@ -151,7 +152,35 @@ const updateLeague = async (axios, leagues_table, league_id, user_id, week) => {
     }
 }
 
+const updatePrevWeekMatchups = async (axios, week, leagues_table) => {
+    const all_leagues = await leagues_table.findAll()
+
+    let new_leagues = []
+    let i = 0;
+    const increment = 100;
+
+    while (i <= all_leagues.length) {
+        await Promise.all(all_leagues
+            .slice(i, Math.min(i + increment, all_leagues.length + 1))
+            .map(async league => {
+                const matchups = await axios.get(`https://api.sleeper.app/v1/league/${league.dataValues.league_id}/matchups/${week}`)
+
+
+                const new_league = {
+                    league_id: league.dataValues.league_id,
+                    [`matchups_${week}`]: matchups.data
+                }
+                new_leagues.push(new_league)
+            }))
+        i += increment
+    }
+    await leagues_table.bulkCreate(new_leagues, {
+        updateOnDuplicate: [`matchups_${week}`]
+    })
+}
+
 module.exports = {
     updateLeaguesUser: updateLeaguesUser,
-    updateLeague: updateLeague
+    updateLeague: updateLeague,
+    updatePrevWeekMatchups: updatePrevWeekMatchups
 }

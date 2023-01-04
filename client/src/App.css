@@ -103,7 +103,7 @@ div.loading {
   animation-delay: 3s;
 }
 
-z p {
+p {
   margin: 0;
 }
 
@@ -336,16 +336,6 @@ button.sw.active {
   filter: brightness(2) contrast(2);
 }
 
-/* STICKY */
-div.page_numbers_wrapper {
-  position: sticky;
-}
-
-table.main,
-tbody.active {}
-
-tbody.active {}
-
 /* Main Table */
 
 table {
@@ -361,17 +351,38 @@ table.main {
   background-color: var(--color1);
   font-size: 1.5rem;
   box-shadow: 0 0 2rem white;
-  white-space: nowrap;
-  position: relative;
-  width: 100%;
 }
 
 table.main>thead {
-  height: 5rem;
+  display: table-header-group;
   position: sticky;
   top: 0rem;
   background-color: inherit;
   z-index: 14;
+}
+
+table.main th {
+  height: 5rem;
+}
+
+table.secondary th {
+  height: 3rem;
+}
+
+table.tertiary th {
+  height: 3rem;
+}
+
+table.main th.half {
+  height: 2.5rem;
+}
+
+table.secondary th.half {
+  height: 1.5rem;
+}
+
+table.tertiary th.half {
+  height: 1.5rem;
 }
 
 tr.main2.active {
@@ -409,7 +420,7 @@ td {
 th {
   filter: contrast(2);
   box-shadow: inset 0 0 .5rem white;
-  padding: .25rem;
+  padding: 0;
 }
 
 tbody,
@@ -421,8 +432,8 @@ td {
 
 div.page_numbers_wrapper {
   width: 100%;
-  background-color: var(--color5);
-  z-index: 15;
+  background-color: inherit;
+
   height: 4rem;
   display: flex;
 }
@@ -487,7 +498,7 @@ table.secondary {
 
 }
 
-table.secondary tr.active td {
+table.secondary tr.secondary.active td {
   background-color: var(--color3);
 }
 
@@ -498,7 +509,7 @@ table.secondary td {
 table.secondary>thead {
   height: 3rem;
   position: sticky;
-  top: 7rem;
+  top: 12rem;
   background-color: var(--color1);
   z-index: 12;
 }
@@ -509,7 +520,7 @@ table.secondary.subs {
   font-size: 80%;
   border: .25rem ridge var(--color2);
   position: sticky;
-  top: 7rem;
+  top: 10.5rem;
   display: inline-table;
 }
 
@@ -528,7 +539,7 @@ table.secondary.subs td {
 tr.secondary.active {
   background-color: var(--color3);
   position: sticky;
-  top: 10rem;
+  top: 15rem;
   z-index: 10;
 }
 
@@ -615,6 +626,14 @@ div.nav>button.active {
   font-size: inherit;
 }
 
+div.secondary.nav {
+  position: sticky;
+  top: 8.75rem;
+  z-index: 12;
+  background-color: inherit;
+  height: 3.5rem;
+}
+
 div.secondary.nav>button.sync {
   padding: .25rem;
   height: 3rem;
@@ -628,6 +647,15 @@ div.secondary.nav>button.sync {
   margin: auto 1rem;
   align-self: flex-end;
   filter: contrast(2) brightness(2);
+}
+
+tr.main2 input.search {
+  font-size: 1.25rem;
+  width: 100%;
+}
+
+tr.main2 ol.dropdown>li>button {
+  font-size: 1.25rem;
 }
 
 div.search_wrapper {
@@ -726,6 +754,31 @@ ol.dropdown>li>button:hover {
   filter: brightness(2);
   background-color: var(--color5);
   color: var(--color2);
+}
+
+/* Tertiary Table */
+
+table.tertiary.subs {
+  display: inline-table;
+  width: 50%;
+  font-size: 90%;
+}
+
+table.tertiary thead {
+  height: 3rem;
+  position: sticky;
+  top: 19rem;
+  background-color: var(--color1);
+  z-index: 9;
+}
+
+table.tertiary th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.tertiary td {
+  background-color: rgb(30, 35, 60);
 }
 
 /* Animations */

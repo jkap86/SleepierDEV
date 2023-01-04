@@ -24,7 +24,7 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 const connectionString = process.env.DATABASE_URL || 'postgres://dev:password123@localhost:5432/dev'
 const ssl = process.env.HEROKU ? { rejectUnauthorized: false } : false
-const db = new Sequelize(connectionString, { dialect: 'postgres', dialectOptions: { ssl: ssl, useUTC: false } })
+const db = new Sequelize(connectionString, { logging: false, dialect: 'postgres', dialectOptions: { ssl: ssl, useUTC: false } })
 
 bootServer(app, axios, db)
 
@@ -33,19 +33,27 @@ const now = Date.now()
 const hour = date.getHours()
 const minute = date.getMinutes()
 const tzOffset = date.getTimezoneOffset()
-const delay = (((32 - hour) * 60) + (60 - minute)) * 60 * 1000
+let delay;
+if (hour < 8) {
+    delay = (((8 - hour) * 60) + (60 - minute)) * 60 * 1000
+} else {
+    delay = (((32 - hour) * 60) + (60 - minute)) * 60 * 1000
+}
+
 setTimeout(async () => {
     setInterval(async () => {
-        sync_daily(app, axios, app.get('leagues_table'))
+        sync_daily(app, axios)
         console.log(`Daily Sync completed at ${new Date()}`)
     }, 24 * 60 * 60 * 1 * 1000)
+
 }, delay)
+console.log(`Daily Sync in ${Math.floor(delay / (60 * 60 * 1000))} hours`)
 
 setInterval(async () => {
     rankings_sync(app, axios)
     console.log('Weekly Rankings Updated at ' + new Date())
-    console.log(`UTC offset - ${new Date(now + (tzOffset * 60 * 1000))}`)
-}, 1 * 60 * 1000)
+    console.log(`UTC offset - ${new Date(Date.now() + (tzOffset * 60))}`)
+}, 2 * 60 * 1000)
 
 app.get('/user', async (req, res, next) => {
     const user = await getUser(axios, req.query.username)

@@ -24,15 +24,15 @@ const Search = ({ id, sendSearched, placeholder, list }) => {
             options = [];
             visible = false
             setPlayerFound(s)
-        } else if (list.map(x => x.text.trim().toLowerCase()).includes(s.trim().toLowerCase())) {
-            const option = list.find(x => x.text.trim().toLowerCase() === s.trim().toLowerCase())
+        } else if (list.map(x => x.text?.trim().toLowerCase()).includes(s.trim().toLowerCase())) {
+            const option = list.find(x => x.text?.trim().toLowerCase() === s.trim().toLowerCase())
             options = []
             visible = false
             setPlayerFound(option)
         } else {
             const all_options = list
             options = all_options.filter(x =>
-                x.text.trim().toLowerCase()
+                x.text?.trim().toLowerCase()
                     .replace("'", '')
                     .includes(s.trim().toLowerCase()))
             visible = true

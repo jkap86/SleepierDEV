@@ -74,6 +74,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                                         colSpan={key?.colSpan}
                                         rowSpan={key?.rowSpan}
                                         className={key?.className}
+                                        onClick={key?.onClick}
                                     >
                                         {
                                             key?.text

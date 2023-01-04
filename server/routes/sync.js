@@ -1,10 +1,16 @@
 const { getPlayersDict, getWeeklyRankings } = require('./playersDict');
+const { updatePrevWeekMatchups } = require('./leagues');
 
 const sync_daily = async (app, axios, leagues_table) => {
     console.log(`Begin Daily Sync at ${new Date()}`)
+    const previousState = app.get('state')
     const state = await axios.get('https://api.sleeper.app/v1/state/nfl')
+    if (state.data.week !== previousState.week) {
+        console.log('updating previous matchups')
+        await updatePrevWeekMatchups(axios, previousState.week, leagues_table)
+    }
     app.set('state', state.data)
-    const allplayers = await getPlayersDict(axios, state.data.week)
+    const allplayers = await getPlayersDict(axios, state.data.season, state.data.week)
     app.set('allplayers', allplayers)
     console.log(`Daily Sync completed at ${new Date()}`)
     console.log(`Next Sync scheduled for ${new Date(Date.now() + (24 * 60 * 60 * 1 * 1000))}`)

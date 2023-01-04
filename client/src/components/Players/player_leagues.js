@@ -9,17 +9,20 @@ const PlayerLeagues = ({ leagues_owned, leagues_taken, leagues_available }) => {
             {
                 text: 'League',
                 colSpan: 3,
-                rowSpan: 2
+                rowSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Rank',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             },
             tab === 'Taken' ?
                 {
                     text: 'Manager',
                     colSpan: 2,
-                    rowSpan: 2
+                    rowSpan: 2,
+                    className: 'half'
                 }
                 :
                 null
@@ -27,11 +30,13 @@ const PlayerLeagues = ({ leagues_owned, leagues_taken, leagues_available }) => {
         [
             {
                 text: 'OVR',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             },
             {
                 text: 'PF',
-                colSpan: 1
+                colSpan: 1,
+                className: 'half'
             }
         ]
     ]

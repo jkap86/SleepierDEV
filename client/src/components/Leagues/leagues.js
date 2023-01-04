@@ -1,5 +1,6 @@
 import TableMain from "../tableMain";
 import { useState } from "react";
+import LeagueInfo from "./leagueInfo";
 
 const Leagues = ({
     stateAllPlayers,
@@ -79,7 +80,14 @@ const Leagues = ({
                         league.userRoster.rank_points / league.rosters.length >= .75 ? 'red' :
                             null
                 }
-            ]
+            ],
+            secondary_table: (
+                <LeagueInfo
+                    league={league}
+                    state_user={state_user}
+                    stateAllPlayers={stateAllPlayers}
+                />
+            )
         }
     })
 

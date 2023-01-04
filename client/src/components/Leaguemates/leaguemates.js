@@ -16,38 +16,46 @@ const Leaguemates = ({
             {
                 text: 'Leaguemate',
                 colSpan: 3,
-                rowSpan: 2
+                rowSpan: 2,
+                className: 'half'
             },
             {
                 text: '#',
                 colSpan: 1,
-                rowSpan: 2
+                rowSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Leaguemate',
-                colSpan: 4
+                colSpan: 4,
+                className: 'half'
             },
             {
                 text: state_user.username,
-                colSpan: 4
+                colSpan: 4,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Record',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Fpts',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Record',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             },
             {
                 text: 'Fpts',
-                colSpan: 2
+                colSpan: 2,
+                className: 'half'
             }
 
         ]
@@ -139,6 +147,7 @@ const Leaguemates = ({
                 ],
                 secondary_table: (
                     <LeaguemateLeagues
+                        stateAllPlayers={stateAllPlayers}
                         state_user={state_user}
                         leaguemate={lm}
                     />

@@ -8,7 +8,7 @@ const Lineup = ({ matchup, opponent, starting_slots, league, optimal_lineup, sta
     const [syncing, setSyncing] = useState(false)
     const [secondaryContent, setSecondaryContent] = useState('Optimal')
 
-    const active_player = lineup_check.find(x => `${x.slot}_${x.index}` === itemActive)?.current_player
+    const active_player = lineup_check?.find(x => `${x.slot}_${x.index}` === itemActive)?.current_player
 
     useEffect(() => {
         if (itemActive) {
@@ -35,34 +35,40 @@ const Lineup = ({ matchup, opponent, starting_slots, league, optimal_lineup, sta
                     .reduce((acc, cur) => acc + cur, 0)
                     .toLocaleString("en-US", { minimumFractionDigits: 2 })
                 ,
-                colSpan: 23
+                colSpan: 23,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Slot',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Player',
-                colSpan: 10
+                colSpan: 10,
+                className: 'half'
             },
             {
                 text: 'Opp',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Rank',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Points',
-                colSpan: 4
+                colSpan: 4,
+                className: 'half'
             }
         ]
     ]
 
-    const lineup_body = lineup_check.map((slot, index) => {
+    const lineup_body = lineup_check?.map((slot, index) => {
         const color = (
             !optimal_lineup.find(x => x.player === slot.current_player) ? 'red'
                 : slot.earlyInFlex || slot.lateNotInFlex ? 'yellow'
@@ -70,11 +76,6 @@ const Lineup = ({ matchup, opponent, starting_slots, league, optimal_lineup, sta
         )
         return {
             id: slot.slot_index,
-            image: {
-                src: slot.current_player,
-                alt: 'player photo',
-                type: 'player'
-            },
             list: !matchup ? [] : [
                 {
                     text: lineup_check.find(x => x.current_player === slot.current_player)?.slot,
@@ -131,29 +132,35 @@ const Lineup = ({ matchup, opponent, starting_slots, league, optimal_lineup, sta
                     .reduce((acc, cur) => acc + cur, 0)
                     .toLocaleString("en-US", { minimumFractionDigits: 2 }
                     ) || 0.00,
-                colSpan: 23
+                colSpan: 23,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Slot',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Player',
-                colSpan: 10
+                colSpan: 10,
+                className: 'half'
             },
             {
                 text: 'Opp',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Rank',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Points',
-                colSpan: 4
+                colSpan: 4,
+                className: 'half'
             }
         ]
     ]

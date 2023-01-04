@@ -17,33 +17,35 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
             {
                 text: 'League',
                 colSpan: 6,
-                rowSpan: 2
+                rowSpan: 2,
+                className: 'half'
             },
             {
                 text: '#Slots',
-                colSpan: 8
+                colSpan: 8,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Suboptimal',
                 colSpan: 2,
-                className: 'small'
+                className: 'small half'
             },
             {
                 text: 'Early in Flex',
                 colSpan: 2,
-                className: 'small'
+                className: 'small half'
             },
             {
                 text: 'Late not in Flex',
                 colSpan: 2,
-                className: 'small'
+                className: 'small half'
             },
             {
                 text: 'Non QBs in SF',
                 colSpan: 2,
-                className: 'small'
+                className: 'small half'
             }
         ]
     ]
@@ -62,12 +64,6 @@ const Lineup_Check = ({ stateState, stateAllPlayers, state_user, stateMatchups, 
                 matchup: opponentMatchup
             }
         }
-
-        console.log({
-            league: matchup_league.league,
-            matchup: matchup,
-            opponent: opponent
-        })
         let lineups = matchup ? getLineupCheck(matchup, matchup_league.league, stateAllPlayers) : null
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
