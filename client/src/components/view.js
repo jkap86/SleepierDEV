@@ -312,6 +312,9 @@ const View = ({
                                     <button className={type2 === 'Standard' ? 'sw active click' : 'sw click'} onClick={() => setType2('Standard')}>Standard</button>
                                 </div>
                             </div>
+                            <h2>
+                                {stateLeaguesFiltered.length} Leagues
+                            </h2>
                         </div>
                         {display}
                         <br /><br /><br /><br /><br /><br /><br />

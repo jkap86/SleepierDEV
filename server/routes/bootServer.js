@@ -1,5 +1,6 @@
 const { users } = require('../models/users');
 const { leagues } = require('../models/leagues');
+const { trades } = require('../models/trades');
 const { getPlayersDict } = require('../routes/playersDict');
 const { updatePrevWeekMatchups } = require('./leagues');
 
@@ -20,12 +21,15 @@ const bootServer = async (app, axios, db) => {
     await users_table.sync()
     const leagues_table = leagues(db, state.data.season)
     await leagues_table.sync({ alter: true })
+    const trades_table = trades(db, state.data.season)
+    await trades_table.sync({ alter: true })
     if (state.data.week === 17) {
         console.log('updating previous matchups')
         await updatePrevWeekMatchups(axios, 16, leagues_table)
     }
     app.set('users_table', users_table)
     app.set('leagues_table', leagues_table)
+    app.set('trades_table', trades_table)
 }
 
 module.exports = {

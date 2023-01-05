@@ -58,8 +58,25 @@ const updateLeaguesUser = async (axios, leagues_table, leagues, user_id, week) =
                     settings: league.data.settings,
                     scoring_settings: league.data.scoring_settings,
                     roster_positions: league.data.roster_positions,
-                    users: users.data,
-                    rosters: rosters.data,
+                    users: users.data.map(user => {
+                        return {
+                            user_id: user.user_id,
+                            display_name: user.display_name,
+                            avatar: user.avatar
+                        }
+                    }),
+                    rosters: rosters.data.map(roster => {
+                        return {
+                            taxi: roster.taxi,
+                            starters: roster.starters,
+                            settings: roster.settings,
+                            roster_id: roster.roster_id,
+                            reserve: roster.reserve,
+                            players: roster.players,
+                            owner_id: roster.owner_id,
+                            co_owners: roster.co_owners
+                        }
+                    }),
                     [`matchups_${week}`]: matchups.data,
                     updatedAt: Date.now()
                 }

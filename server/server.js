@@ -12,10 +12,12 @@ const axios = require('axios').create({
     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     timeout: 5000
 })
+const axiosRetry = require('axios-retry');
 const { bootServer } = require('./routes/bootServer');
 const { getUser, updateUser } = require('./routes/user');
 const { updateLeaguesUser, updateLeague } = require('./routes/leagues');
-const { sync_daily, rankings_sync } = require('./routes/sync');
+const { sync_daily, rankings_sync, trades_sync } = require('./routes/sync');
+const { getTrades } = require('./routes/trades');
 
 app.use(compression())
 app.use(cors());
@@ -25,6 +27,15 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 const connectionString = process.env.DATABASE_URL || 'postgres://dev:password123@localhost:5432/dev'
 const ssl = process.env.HEROKU ? { rejectUnauthorized: false } : false
 const db = new Sequelize(connectionString, { logging: false, dialect: 'postgres', dialectOptions: { ssl: ssl, useUTC: false } })
+
+
+axiosRetry(axios, {
+    retries: 3,
+    retryCondition: () => {
+        return true
+    }
+})
+
 
 bootServer(app, axios, db)
 
@@ -42,7 +53,7 @@ if (hour < 8) {
 
 setTimeout(async () => {
     setInterval(async () => {
-        sync_daily(app, axios)
+        sync_daily(app, axios, app.get('leagues_table'))
         console.log(`Daily Sync completed at ${new Date()}`)
     }, 24 * 60 * 60 * 1 * 1000)
 
@@ -53,7 +64,11 @@ setInterval(async () => {
     rankings_sync(app, axios)
     console.log('Weekly Rankings Updated at ' + new Date())
     console.log(`UTC offset - ${new Date(Date.now() + (tzOffset * 60))}`)
-}, 2 * 60 * 1000)
+}, 5 * 60 * 1000)
+
+setTimeout(async () => {
+    trades_sync(app, axios, app.get('leagues_table'), app.get('trades_table'))
+}, [15 * 1000])
 
 app.get('/user', async (req, res, next) => {
     const user = await getUser(axios, req.query.username)
@@ -79,16 +94,21 @@ app.get('/user', async (req, res, next) => {
     })
 })
 
-app.get('/syncleague', async (req, res) => {
-    const league_id = req.query.league_id
-    const user_id = req.query.user_id
-    const league = await updateLeague(axios, app.get('leagues_table'), league_id, user_id, app.get('state').week)
-    res.send(league)
+app.get('/trades', async (req, res) => {
+    const trades = await getTrades(app.get('trades_table'))
+    res.send(trades)
 })
 
 app.get('/allplayers', (req, res) => {
     const allplayers = app.get('allplayers')
     res.send(allplayers)
+})
+
+app.get('/syncleague', async (req, res) => {
+    const league_id = req.query.league_id
+    const user_id = req.query.user_id
+    const league = await updateLeague(axios, app.get('leagues_table'), league_id, user_id, app.get('state').week)
+    res.send(league)
 })
 
 app.get('*', async (req, res) => {

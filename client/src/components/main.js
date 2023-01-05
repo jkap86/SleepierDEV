@@ -58,7 +58,10 @@ const Main = () => {
             })
             if (user.data?.leagues) {
                 const allplayers = await axios.get('/allplayers')
-
+                const trades = await axios.get('/trades')
+                console.log({
+                    trades: trades.data
+                })
                 setStateState(user.data.state)
 
                 setState_User(user.data.user)
